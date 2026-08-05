@@ -3,11 +3,12 @@ import { isLocale, locales, site, stripLocale, withLocale } from "@/lib/site";
 
 describe("site config", () => {
   it("exposes public brand only", () => {
-    expect(site.name).toBe("Sunday");
-    expect(site.handle).toBe("sunday");
+    expect(site.name).toBe("Nathan Zhao");
+    expect(site.handle).toBe("nathan");
     expect(site.social.github).toContain("sundaydev-arch");
     expect(site.url).toBe("https://sundaydev.vercel.app");
     expect(site.social.website).toBe("https://sundaydev.vercel.app/");
+    expect(site.social.cal).toBe("https://cal.com/nathan-zhao");
     expect(site.jobTitle).toBe("Fullstack Engineer");
     expect(site.knowsAbout).toContain("TypeScript");
   });

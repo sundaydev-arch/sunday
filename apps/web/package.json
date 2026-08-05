@@ -16,10 +16,13 @@
   },
   "dependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@calcom/embed-react": "^1.5.3",
     "@sentry/nextjs": "^10.69.0",
     "@sunday/analytics": "workspace:*",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.28.0",
     "next": "16.3.0",
     "next-intl": "^4.13.5",
     "posthog-js": "^1.412.1",
@@ -27,6 +30,7 @@
     "react-dom": "19.2.8",
     "resend": "^6.18.1",
     "sonner": "^2.0.7",
+    "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

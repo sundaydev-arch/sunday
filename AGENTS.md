@@ -10,13 +10,14 @@
 
 ## Rules
 
+- Public name: **Nathan Zhao** (`site.name`). Handle display: `nathan`.
 - Default locale `/en`; Chinese `/zh`. Messages live in `apps/web/src/messages/`.
 - Site URL: `https://sundaydev.vercel.app` (`site.url`).
-- Privacy: brand **Sunday** only — no real name, employers, school, private email on the public site.
+- Do not expose employers, school, phone, or private email on the public site (projects stay anonymized).
 - Contact UI stays terminal-themed; do not drop in stock shadcn Input/Button skins.
 - `pnpm typecheck` must keep `next typegen` (for `PageProps` / `LayoutProps`).
 - Read `apps/web/node_modules/next/dist/docs/` before changing Next APIs.
-- Keep changes scoped.
+- Keep changes scoped. Package names `@sunday/*` are monorepo IDs — not the public brand.
 
 ## Commands
 

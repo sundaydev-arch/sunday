@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("home", () => {
   test("loads English home and switches language", async ({ page }) => {
     await page.goto("/en");
-    await expect(page.getByText("Sunday").first()).toBeVisible();
+    await expect(page.getByText("Nathan Zhao").first()).toBeVisible();
 
     const nav = page.getByRole("navigation", { name: "Primary" });
     await expect(

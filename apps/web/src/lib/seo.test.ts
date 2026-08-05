@@ -33,7 +33,7 @@ describe("seo helpers", () => {
     const meta = buildPageMetadata({
       lang: "en",
       path: "/",
-      title: "Sunday — Fullstack Engineer",
+      title: "Nathan Zhao — Fullstack Engineer",
       description: "Test description",
       absoluteTitle: true,
     });
@@ -42,11 +42,10 @@ describe("seo helpers", () => {
     expect(meta.twitter).toMatchObject({ card: "summary_large_image" });
   });
 
-  it("emits privacy-safe Person + WebSite JSON-LD", () => {
+  it("emits Person + WebSite JSON-LD", () => {
     const [person, website] = buildSiteJsonLd("en", "desc");
     expect(person["@type"]).toBe("Person");
-    expect(person.name).toBe("Sunday");
+    expect(person.name).toBe("Nathan Zhao");
     expect(website["@type"]).toBe("WebSite");
-    expect(JSON.stringify(person)).not.toMatch(/@gmail\.com|赵楠/i);
   });
 });

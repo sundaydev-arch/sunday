@@ -1,12 +1,13 @@
 # Contributing to Sunday
 
-Thanks for helping improve this open-source personal site template.
+Thanks for helping improve this open-source personal site (**Nathan Zhao** on the public pages).
 
 ## Before you start
 
 1. Read [AGENTS.md](./AGENTS.md) for monorepo conventions.
-2. Keep the public site **privacy-safe**: no real name, employers, school, phone, or private email.
+2. Keep the public site free of employers, school, phone, or private email (project case studies stay anonymized).
 3. Default locale is English (`/en`); Chinese is `/zh`.
+4. Public brand name is **Nathan Zhao**.
 
 ## Setup
 

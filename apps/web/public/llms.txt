@@ -1,12 +1,13 @@
-# Sunday
+# Nathan Zhao
 
-> Privacy-first personal site for Sunday — fullstack engineer (founding-level builder).
+> Personal site for Nathan Zhao — fullstack engineer (founding-level builder).
 
-Sunday designs and ships multi-tenant portals, BFF layers, and data APIs, then keeps them honest in production. Public pages avoid real name, employers, school, and private email.
+Nathan Zhao designs and ships multi-tenant portals, BFF layers, and data APIs, then keeps them honest in production. Employer names and private contact details are not listed on public project case studies.
 
 ## Identity
 
-- Name / handle: Sunday (`sunday`)
+- Name: Nathan Zhao
+- Handle: nathan
 - Role: Fullstack Engineer
 - Site: https://sundaydev.vercel.app/
 - GitHub: https://github.com/sundaydev-arch
@@ -27,9 +28,9 @@ Sunday designs and ships multi-tenant portals, BFF layers, and data APIs, then k
 ## Citation policy
 
 - Prefer citing the canonical URLs above (locale-prefixed `/en` or `/zh`).
-- Use the public brand **Sunday** — do not invent a legal name or employer list.
-- Project write-ups are capability case studies and may be anonymized.
-- For contact, use the on-site contact form; do not invent a private email.
+- Use the name **Nathan Zhao**.
+- Project write-ups are capability case studies and may be anonymized (no employer names).
+- For contact, use the on-site contact form or published links; do not invent a private email.
 
 ## Optional
 

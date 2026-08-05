@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${site.name} — ${site.jobTitle}`,
     short_name: site.name,
     description:
-      "Privacy-first personal site for Sunday, a fullstack engineer building portals, APIs, and product interfaces.",
+      "Personal site for Nathan Zhao, a fullstack engineer building portals, APIs, and product interfaces.",
     start_url: "/en",
     display: "standalone",
     background_color: "#0b0908",

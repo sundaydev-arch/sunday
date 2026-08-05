@@ -1,23 +1,23 @@
 {
   "meta": {
-    "title": "Sunday — 全栈工程师",
-    "description": "Sunday — 全栈工程师，专注多租户 Portal、API 与清晰的产品界面。TypeScript · Next.js · NestJS · FastAPI · Go。",
+    "title": "Nathan Zhao — 全栈工程师",
+    "description": "Nathan Zhao — 全栈工程师，专注多租户 Portal、API 与清晰的产品界面。TypeScript · Next.js · NestJS · FastAPI · Go。",
     "pages": {
       "home": {
-        "title": "Sunday — 全栈工程师",
-        "description": "Sunday 是全栈工程师，交付多租户 Portal、BFF 与数据 API，技术栈覆盖 TypeScript、Next.js、NestJS、FastAPI 与 Go。"
+        "title": "Nathan Zhao — 全栈工程师",
+        "description": "Nathan Zhao 是全栈工程师，交付多租户 Portal、BFF 与数据 API，技术栈覆盖 TypeScript、Next.js、NestJS、FastAPI 与 Go。"
       },
       "about": {
         "title": "关于",
-        "description": "关于 Sunday — 关注系统边界与真实界面的全栈工程师，覆盖鉴权、配额、API、缓存与线上治理。公开资料保持隐私优先。"
+        "description": "关于 Nathan Zhao — 关注系统边界与真实界面的全栈工程师，覆盖鉴权、配额、API、缓存与线上治理。"
       },
       "projects": {
         "title": "项目",
-        "description": "Sunday 精选匿名化案例：多租户 Portal、SaaS 前端平台，以及微前端 CMS 拆分与交付。"
+        "description": "Nathan Zhao 精选匿名化案例：多租户 Portal、SaaS 前端平台，以及微前端 CMS 拆分与交付。"
       },
       "contact": {
         "title": "联系",
-        "description": "联系 Sunday，洽谈全栈岗位与协作。请附上岗位、技术栈与时间线。"
+        "description": "联系 Nathan Zhao，洽谈全栈岗位与协作。请附上岗位、技术栈与时间线。"
       }
     }
   },
@@ -77,9 +77,13 @@
   "contact": {
     "eyebrow": "open ./inbox",
     "title": "联系我",
-    "blurb": "发一段 brief 即可——岗位、技术栈、时间线。消息写入联系收件箱。",
+    "blurb": "发一段 brief 即可——岗位、技术栈、时间线。若更适合当面聊，也可在下方预约时段。",
     "github": "github",
     "website": "个人网站",
+    "schedule": "预约",
+    "calEyebrow": "./cal book",
+    "calTitle": "预约通话",
+    "calBlurb": "选个合适的时间——岗位沟通、协作，或快速对齐技术栈。",
     "formHint": "POST /api/contact",
     "fields": {
       "name": "--name",

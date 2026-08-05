@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getCalUrl } from "@/lib/cal";
 import { site, type Locale } from "@/lib/site";
 
 export function SiteFooter({
@@ -10,6 +11,8 @@ export function SiteFooter({
   exitLabel: string;
   stackLabel: string;
 }) {
+  const calUrl = getCalUrl() ?? site.social.cal;
+
   return (
     <footer className="border-t border-[var(--line)] px-4 py-8 sm:px-6 sm:py-10">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 font-mono text-xs sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:text-sm">
@@ -37,6 +40,14 @@ export function SiteFooter({
             rel="noopener noreferrer"
           >
             website
+          </Link>
+          <Link
+            href={calUrl}
+            className="transition-colors hover:text-[var(--accent)]"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            schedule
           </Link>
           <Link
             href={`/${lang}/contact`}

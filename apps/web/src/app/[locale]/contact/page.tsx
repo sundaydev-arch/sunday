@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CalEmbed } from "@/components/cal-embed";
 import { ContactForm } from "@/components/contact-form";
+import { getCalLink, getCalUrl } from "@/lib/cal";
 import { buildPageMetadata } from "@/lib/seo";
 import { isLocale, site } from "@/lib/site";
 import { getDictionary } from "../dictionaries";
@@ -26,6 +28,8 @@ export default async function ContactPage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
+  const calLink = getCalLink();
+  const calUrl = getCalUrl() ?? site.social.cal;
 
   return (
     <div className="geek-shell px-4 pt-32 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
@@ -69,6 +73,17 @@ export default async function ContactPage({
                 sundaydev.vercel.app
               </Link>
             </p>
+            <p className="break-all sm:break-normal">
+              {dict.contact.schedule}:{" "}
+              <Link
+                href={calUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--accent)] underline decoration-[var(--line)] underline-offset-4 transition hover:decoration-[var(--accent)]"
+              >
+                cal.com/{calLink ?? "nathan-zhao"}
+              </Link>
+            </p>
           </div>
         </div>
         <div
@@ -87,6 +102,30 @@ export default async function ContactPage({
           />
         </div>
       </div>
+
+      {calLink ? (
+        <section
+          className="animate-rise mx-auto mt-14 max-w-5xl sm:mt-16"
+          style={{ animationDelay: "180ms" }}
+          aria-labelledby="cal-heading"
+        >
+          <p className="font-mono text-xs tracking-[0.2em] text-[var(--accent)] uppercase">
+            {dict.contact.calEyebrow}
+          </p>
+          <h2
+            id="cal-heading"
+            className="font-display mt-3 text-2xl font-semibold tracking-tight text-[var(--ink)] sm:text-3xl"
+          >
+            {dict.contact.calTitle}
+          </h2>
+          <p className="mt-3 max-w-xl font-mono text-sm leading-relaxed text-[var(--muted)]">
+            {dict.contact.calBlurb}
+          </p>
+          <div className="mt-8 border border-[var(--line)] bg-[var(--panel)]">
+            <CalEmbed calLink={calLink} />
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

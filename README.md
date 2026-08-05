@@ -1,6 +1,6 @@
-# Sunday — personal site (pnpm monorepo)
+# Sunday — open-source personal site (pnpm monorepo)
 
-Modern Next.js portfolio with EN/ZH routing, Sentry + PostHog, contact inbox (Supabase + Resend + Turnstile), and a full quality toolchain.
+Open-source Next.js portfolio for **Nathan Zhao**. EN/ZH routing, Sentry + PostHog, contact inbox (Supabase + Resend + Turnstile), and a full quality toolchain. Repo / packages stay `sunday` / `@sunday/*`.
 
 **Live:** [https://sundaydev.vercel.app/](https://sundaydev.vercel.app/) · **Source:** [sundaydev-arch/sunday](https://github.com/sundaydev-arch/sunday)
 
@@ -62,13 +62,14 @@ Then:
 
 Copy from [`apps/web/.env.example`](./apps/web/.env.example):
 
-| Vars                                                      | Purpose                                                              |
-| --------------------------------------------------------- | -------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_*`                                  | Contact inbox ([migration](./supabase/README.md))                    |
-| `NEXT_PUBLIC_SENTRY_DSN` (+ optional auth/org/project)    | Errors                                                               |
-| `NEXT_PUBLIC_POSTHOG_*`                                   | Analytics                                                            |
-| `RESEND_*` / `CONTACT_NOTIFY_*`                           | Email notify — `CONTACT_NOTIFY_FROM` must be an **email**, not a URL |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Captcha (required in production)                                     |
+| Vars                                                         | Purpose                                                  |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_*`                                     | Contact inbox ([schema](./supabase/README.md))           |
+| `NEXT_PUBLIC_SENTRY_DSN` (+ optional auth/org/project)       | Errors                                                   |
+| `NEXT_PUBLIC_POSTHOG_*`                                      | Analytics                                                |
+| `RESEND_*` / `CONTACT_NOTIFY_*`                              | Email notify — `CONTACT_NOTIFY_FROM` must be an **email** |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`    | Captcha (required in production)                         |
+| `NEXT_PUBLIC_CAL_LINK`                                       | Cal.com embed path (e.g. `nathan-zhao`) on Contact       |
 
 Never commit `.env.local`. Never put `service_role` in `NEXT_PUBLIC_*`.
 

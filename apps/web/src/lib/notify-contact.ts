@@ -15,14 +15,14 @@ export async function notifyContactMessage(payload: ContactMessage) {
   const to = process.env.CONTACT_NOTIFY_TO;
   // Must be an email address (Resend From), not a website URL.
   const from =
-    process.env.CONTACT_NOTIFY_FROM ?? "Sunday <onboarding@resend.dev>";
+    process.env.CONTACT_NOTIFY_FROM ?? "Nathan Zhao <onboarding@resend.dev>";
 
   if (!apiKey || !to) {
     return { sent: false as const, reason: "not_configured" as const };
   }
 
   const resend = new Resend(apiKey);
-  const subject = `[Sunday] New message from ${payload.name}`;
+  const subject = `[Nathan Zhao] New message from ${payload.name}`;
   const text = [
     `Name: ${payload.name}`,
     `Email: ${payload.email}`,
