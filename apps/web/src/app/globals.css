@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0908;
+  --foreground: #d4c4b4;
+  --ink: #f0e4d8;
+  --muted: #8a7464;
+  --line: rgba(212, 146, 106, 0.2);
+  --accent: #d4926a;
+  --accent-deep: #b8734a;
+  --accent-dim: rgba(212, 146, 106, 0.12);
+  --accent-ink: #140c08;
+  --nav-track: #14100e;
+  --panel: #100e0c;
+  --hero-glow: rgba(212, 146, 106, 0.12);
+  --grid: rgba(212, 146, 106, 0.07);
+  --shell-top: #0e0b09;
+  --field: #0c0a08;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  overflow-x: clip;
+  min-width: 0;
+}
+
+.nav-scroll {
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.geek-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      ellipse 70% 45% at 50% -5%,
+      var(--hero-glow),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--shell-top) 0%, var(--background) 55%);
+}
+
+.geek-shell::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 30%,
+    #000 20%,
+    transparent 75%
+  );
+}
+
+.geek-shell::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.14) 2px,
+    rgba(0, 0, 0, 0.14) 4px
+  );
+  opacity: 0.4;
+}
+
+.geek-shell > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 0 0 0 rgba(212, 146, 106, 0.35);
+  }
+  to {
+    box-shadow: 0 0 0 8px rgba(212, 146, 106, 0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-nav-in {
+  animation: nav-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cursor-blink::after {
+  content: "█";
+  margin-left: 0.15em;
+  color: var(--accent);
+  animation: blink 1.1s step-end infinite;
+}
+
+.scan-line {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  height: 120px;
+  background: linear-gradient(
+    transparent,
+    rgba(212, 146, 106, 0.06),
+    transparent
+  );
+  animation: scan 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-nav-in,
+  .cursor-blink::after,
+  .scan-line {
+    animation: none;
+  }
+}
+
+::selection {
+  background: rgba(212, 146, 106, 0.32);
+  color: #140c08;
+}
