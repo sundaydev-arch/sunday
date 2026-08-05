@@ -106,7 +106,7 @@ export function buildSiteJsonLd(lang: Locale, description: string) {
       url: site.url,
       jobTitle: site.jobTitle,
       description,
-      sameAs: [site.social.github, site.social.website],
+      sameAs: [site.social.github, site.social.website, site.social.cal],
       knowsAbout: [...site.knowsAbout],
     },
     {

@@ -20,16 +20,18 @@ export function withLocale(lang: Locale, path = "/"): string {
   return `/${lang}${normalized}`;
 }
 
-/** Public site meta — no personal name, employers, school, or private email */
+/** Public site meta — no employers, school, or private email on the site */
 export const site = {
-  name: "Sunday",
-  handle: "sunday",
+  name: "Nathan Zhao",
+  handle: "nathan",
   jobTitle: "Fullstack Engineer",
   /** Canonical production origin (no trailing slash) */
   url: "https://sundaydev.vercel.app",
   social: {
     github: "https://github.com/sundaydev-arch",
     website: "https://sundaydev.vercel.app/",
+    /** Public Cal.com profile — override path via NEXT_PUBLIC_CAL_LINK */
+    cal: "https://cal.com/nathan-zhao",
   },
   /** Topics for schema.org / GEO — capability-focused, no employers */
   knowsAbout: [

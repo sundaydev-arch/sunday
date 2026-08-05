@@ -45,7 +45,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             <span className="text-[var(--muted)]">$ {dict.home.whoami}</span>
           </p>
 
-          <p className="animate-rise cursor-blink font-display text-4xl font-semibold tracking-tight text-[var(--ink)] sm:text-7xl md:text-8xl">
+          <p className="animate-rise cursor-blink font-display text-3xl font-semibold tracking-tight break-words text-[var(--ink)] sm:text-6xl md:text-7xl">
             {site.name}
           </p>
 

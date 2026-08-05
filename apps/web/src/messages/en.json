@@ -1,23 +1,23 @@
 {
   "meta": {
-    "title": "Sunday — Fullstack Engineer",
-    "description": "Sunday — fullstack engineer building multi-tenant portals, APIs, and sharp product interfaces. TypeScript · Next.js · NestJS · FastAPI · Go.",
+    "title": "Nathan Zhao — Fullstack Engineer",
+    "description": "Nathan Zhao — fullstack engineer building multi-tenant portals, APIs, and sharp product interfaces. TypeScript · Next.js · NestJS · FastAPI · Go.",
     "pages": {
       "home": {
-        "title": "Sunday — Fullstack Engineer",
-        "description": "Sunday is a fullstack engineer shipping multi-tenant portals, BFF layers, and data APIs with TypeScript, Next.js, NestJS, FastAPI, and Go."
+        "title": "Nathan Zhao — Fullstack Engineer",
+        "description": "Nathan Zhao is a fullstack engineer shipping multi-tenant portals, BFF layers, and data APIs with TypeScript, Next.js, NestJS, FastAPI, and Go."
       },
       "about": {
         "title": "About",
-        "description": "About Sunday — systems-minded fullstack engineer focused on auth, quotas, APIs, caches, and production governance. Privacy-first public profile."
+        "description": "About Nathan Zhao — systems-minded fullstack engineer focused on auth, quotas, APIs, caches, and production governance."
       },
       "projects": {
         "title": "Projects",
-        "description": "Selected anonymized case studies by Sunday: multi-tenant portals, SaaS frontend platforms, and micro-frontend CMS delivery."
+        "description": "Selected anonymized case studies by Nathan Zhao: multi-tenant portals, SaaS frontend platforms, and micro-frontend CMS delivery."
       },
       "contact": {
         "title": "Contact",
-        "description": "Contact Sunday for fullstack roles and collaborations. Send a brief with role, stack, and timeline."
+        "description": "Contact Nathan Zhao for fullstack roles and collaborations. Send a brief with role, stack, and timeline."
       }
     }
   },
@@ -77,9 +77,13 @@
   "contact": {
     "eyebrow": "open ./inbox",
     "title": "ping me",
-    "blurb": "Drop a brief — role, stack, and timeline. Messages go to the contact inbox.",
+    "blurb": "Drop a brief — role, stack, and timeline. Or book a slot below if a live chat is easier.",
     "github": "github",
     "website": "website",
+    "schedule": "schedule",
+    "calEyebrow": "./cal book",
+    "calTitle": "Book a call",
+    "calBlurb": "Pick a time that works — roles, collabs, or a quick stack alignment.",
     "formHint": "POST /api/contact",
     "fields": {
       "name": "--name",
