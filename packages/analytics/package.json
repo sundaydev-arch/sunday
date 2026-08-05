@@ -21,7 +21,7 @@
     "@sunday/typescript-config": "workspace:*",
     "@types/react": "^19",
     "posthog-js": "^1.412.1",
-    "typescript": "^5",
+    "typescript": "^7",
     "vitest": "^4.0.18"
   },
   "scripts": {
