@@ -1,5 +1,6 @@
 import { Resend } from "resend";
-import type { ContactPayload } from "@/lib/contact";
+import type { ContactMessage } from "@/lib/contact";
+import { site } from "@/lib/site";
 
 function escapeHtml(value: string) {
   return value
@@ -9,9 +10,10 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;");
 }
 
-export async function notifyContactMessage(payload: ContactPayload) {
+export async function notifyContactMessage(payload: ContactMessage) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_NOTIFY_TO;
+  // Must be an email address (Resend From), not a website URL.
   const from =
     process.env.CONTACT_NOTIFY_FROM ?? "Sunday <onboarding@resend.dev>";
 
@@ -24,6 +26,7 @@ export async function notifyContactMessage(payload: ContactPayload) {
   const text = [
     `Name: ${payload.name}`,
     `Email: ${payload.email}`,
+    `Site: ${site.url}/`,
     "",
     payload.message,
   ].join("\n");
@@ -32,6 +35,7 @@ export async function notifyContactMessage(payload: ContactPayload) {
     <div style="font-family: ui-monospace, monospace; line-height: 1.5;">
       <p><strong>Name:</strong> ${escapeHtml(payload.name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
+      <p><strong>Site:</strong> <a href="${site.url}/">${site.url}/</a></p>
       <hr />
       <p style="white-space: pre-wrap;">${escapeHtml(payload.message)}</p>
     </div>

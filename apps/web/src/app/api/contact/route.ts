@@ -1,11 +1,36 @@
 import { NextResponse } from "next/server";
 import { captureException } from "@sunday/analytics/sentry";
-import { contactErrorMessages, parseContactBody } from "@/lib/contact";
+import {
+  contactErrorMessages,
+  parseContactBody,
+  toContactMessage,
+} from "@/lib/contact";
 import { notifyContactMessage } from "@/lib/notify-contact";
+import {
+  clientIpFromHeaders,
+  hashIp,
+  rateLimit,
+} from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 export async function POST(request: Request) {
   try {
+    const ip = clientIpFromHeaders(request.headers);
+    const limited = rateLimit(`contact:${hashIp(ip)}`, {
+      limit: 5,
+      windowMs: 15 * 60 * 1000,
+    });
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: contactErrorMessages.rate_limited },
+        {
+          status: 429,
+          headers: { "Retry-After": String(limited.retryAfterSec) },
+        },
+      );
+    }
+
     let body: unknown;
     try {
       body = await request.json();
@@ -24,6 +49,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const captcha = await verifyTurnstileToken(
+      parsed.data.turnstileToken,
+      ip,
+    );
+    if (!captcha.ok) {
+      return NextResponse.json(
+        { error: contactErrorMessages[captcha.error] },
+        { status: 400 },
+      );
+    }
+
+    const message = toContactMessage(parsed.data);
+
     const supabase = await createClient();
     if (!supabase) {
       return NextResponse.json(
@@ -32,7 +70,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error } = await supabase.from("messages").insert(parsed.data);
+    const { error } = await supabase.from("messages").insert(message);
 
     if (error) {
       captureException(error, { source: "contact_insert" });
@@ -43,9 +81,8 @@ export async function POST(request: Request) {
     }
 
     try {
-      await notifyContactMessage(parsed.data);
+      await notifyContactMessage(message);
     } catch (notifyError) {
-      // Message is already saved — don't fail the request if email fails.
       captureException(notifyError, { source: "contact_notify" });
     }
 

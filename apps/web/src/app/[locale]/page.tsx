@@ -1,13 +1,30 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { getDictionary, getProjectsFromDict } from "./dictionaries";
-import { isLocale, site } from "@/lib/site";
 import { notFound } from "next/navigation";
+import { getDictionary, getProjectsFromDict } from "./dictionaries";
+import { buildPageMetadata } from "@/lib/seo";
+import { isLocale, site } from "@/lib/site";
 
-export default async function HomePage({ params }: PageProps<"/[lang]">) {
-  const { lang } = await params;
-  if (!isLocale(lang)) notFound();
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
+  return buildPageMetadata({
+    lang: locale,
+    path: "/",
+    title: dict.meta.pages.home.title,
+    description: dict.meta.pages.home.description,
+    absoluteTitle: true,
+  });
+}
 
-  const dict = await getDictionary(lang);
+export default async function HomePage({ params }: PageProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+
+  const dict = await getDictionary(locale);
   const projects = getProjectsFromDict(dict)
     .filter((p) => p.featured)
     .slice(0, 3);
@@ -50,13 +67,13 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             style={{ animationDelay: "220ms" }}
           >
             <Link
-              href={`/${lang}/projects`}
+              href={`/${locale}/projects`}
               className="rounded-full bg-[var(--accent)] px-5 py-3 font-mono text-sm font-medium text-[var(--accent-ink)] transition hover:bg-[var(--accent-deep)] hover:text-white sm:px-6"
             >
               {dict.home.ctaProjects}
             </Link>
             <Link
-              href={`/${lang}/contact`}
+              href={`/${locale}/contact`}
               className="rounded-full border border-[var(--line)] bg-[var(--accent-dim)] px-5 py-3 font-mono text-sm font-medium text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] sm:px-6"
             >
               {dict.home.ctaContact}
@@ -98,7 +115,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             ))}
           </ul>
           <Link
-            href={`/${lang}/projects`}
+            href={`/${locale}/projects`}
             className="mt-8 inline-flex font-mono text-sm text-[var(--accent)] transition hover:text-[var(--ink)] sm:mt-10"
           >
             {dict.home.selectedCta}

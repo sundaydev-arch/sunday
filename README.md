@@ -1,70 +1,85 @@
 # Sunday — personal site (pnpm monorepo)
 
-Modern Next.js portfolio with EN/ZH routing, Sentry + PostHog, and a full quality toolchain.
+Modern Next.js portfolio with EN/ZH routing, Sentry + PostHog, contact inbox (Supabase + Resend + Turnstile), and a full quality toolchain.
+
+**Live:** [https://sundaydev.vercel.app/](https://sundaydev.vercel.app/) · **Source:** [sundaydev-arch/sunday](https://github.com/sundaydev-arch/sunday)
 
 ```text
 sunday/
-  apps/web                      # @sunday/web — Next.js 16
-  packages/analytics            # @sunday/analytics — Sentry/PostHog helpers
-  packages/eslint-config        # shared ESLint flat config
+  apps/web                 # @sunday/web — Next.js 16
+  packages/analytics       # Sentry / PostHog helpers
+  packages/eslint-config
   packages/typescript-config
-  turbo.json
-  .github/
-    PULL_REQUEST_TEMPLATE.md
-    workflows/ci.yml          # lint · typecheck · unit · e2e
-    workflows/pr.yml          # conventional PR title
-    ISSUE_TEMPLATE/
-    dependabot.yml
+  supabase/                # schema + RLS contract
+  lighthouserc.cjs
+  .github/workflows/       # ci · pr · lighthouse
 ```
 
-## Tooling map
-
-| Concern                          | Tool                                                          |
-| -------------------------------- | ------------------------------------------------------------- |
-| Lint / a11y-ish web vitals rules | ESLint 9 + `eslint-config-next` (core-web-vitals)             |
-| Format                           | Prettier + Tailwind plugin                                    |
-| Types                            | TypeScript (`pnpm typecheck`)                                 |
-| Unit tests                       | Vitest + Testing Library                                      |
-| E2E + perf smoke                 | Playwright                                                    |
-| Bundle size                      | `@next/bundle-analyzer` (`pnpm analyze`)                      |
-| Errors / traces                  | Sentry                                                        |
-| Product analytics                | PostHog                                                       |
-| Task graph                       | Turborepo                                                     |
-| Agents                           | `AGENTS.md`, `CLAUDE.md`, `.codex/AGENTS.md`, `.cursor/rules` |
-
-## Setup
+## Setup checklist
 
 ```bash
 corepack enable
 pnpm install
 cp apps/web/.env.example apps/web/.env.local
+# fill apps/web/.env.local — see Environment below
 pnpm --filter @sunday/web exec playwright install
 pnpm dev
 ```
 
+Then:
+
+1. **Supabase** — apply [`supabase/schema/messages.sql`](./supabase/README.md) (anon INSERT-only RLS)  
+2. **Turnstile** — site + secret keys in env (production)  
+3. **Resend** (optional) — email notify  
+4. **Vercel** — same env vars; repo-root `vercel.json` builds `@sunday/web`
+
 ## Scripts
 
-| Command         | Description                   |
-| --------------- | ----------------------------- |
-| `pnpm dev`      | Next.js dev server            |
-| `pnpm build`    | Production build (turbo)      |
-| `pnpm check`    | lint + typecheck + unit tests |
-| `pnpm test`     | Unit tests                    |
-| `pnpm test:e2e` | Playwright (builds first)     |
-| `pnpm analyze`  | Open bundle analyzer          |
-| `pnpm format`   | Prettier write                |
+| Command                | Description                          |
+| ---------------------- | ------------------------------------ |
+| `pnpm dev`             | Next.js dev server                   |
+| `pnpm build`           | Production build (turbo)             |
+| `pnpm check`           | format + lint + typecheck + unit     |
+| `pnpm test`            | Unit tests                           |
+| `pnpm test:e2e`        | Playwright (+ axe)                   |
+| `pnpm test:lighthouse` | Lighthouse CI (run `pnpm build` first) |
+| `pnpm analyze`         | Bundle analyzer                      |
+| `pnpm format`          | Prettier write                       |
+
+`pnpm typecheck` runs `next typegen` then `tsc` (needed for `PageProps` / `LayoutProps`).
+
+## Tooling
+
+| Concern        | Tool                                                |
+| -------------- | --------------------------------------------------- |
+| App            | Next.js 16 App Router · Tailwind 4 · `next-intl`    |
+| Contact        | Zod · Sonner · Turnstile · IP rate limit · Supabase |
+| Observability  | Sentry · PostHog (`@sunday/analytics`)              |
+| Quality        | ESLint · Prettier · Vitest · Playwright · LHCI      |
+| Monorepo       | pnpm · Turborepo                                    |
 
 ## Environment
 
-See `apps/web/.env.example` for Supabase, Sentry, and PostHog keys.
+Copy from [`apps/web/.env.example`](./apps/web/.env.example):
 
-## Deploy (Vercel)
+| Vars | Purpose |
+| ---- | ------- |
+| `NEXT_PUBLIC_SUPABASE_*` | Contact inbox ([migration](./supabase/README.md)) |
+| `NEXT_PUBLIC_SENTRY_DSN` (+ optional auth/org/project) | Errors |
+| `NEXT_PUBLIC_POSTHOG_*` | Analytics |
+| `RESEND_*` / `CONTACT_NOTIFY_*` | Email notify — `CONTACT_NOTIFY_FROM` must be an **email**, not a URL |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Captcha (required in production) |
 
-Import the repo root. `vercel.json` runs `pnpm install` + `pnpm --filter @sunday/web build`. Add the same env vars in the Vercel project.
+Never commit `.env.local`. Never put `service_role` in `NEXT_PUBLIC_*`.
+
+## SEO / GEO
+
+- Canonical + `hreflang` · Open Graph · `sitemap.xml` · `robots.txt` · JSON-LD  
+- [`/llms.txt`](./apps/web/public/llms.txt) and `/.well-known/llms.txt`
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs use the template under `.github/PULL_REQUEST_TEMPLATE.md`. CI + conventional PR title checks run on every non-draft pull request.
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Conventional PR titles for humans; Dependabot titles are skipped. CI + Lighthouse run on non-draft PRs.
 
 ## License
 

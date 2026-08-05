@@ -13,9 +13,11 @@
     "analyze": "turbo run analyze",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "test:lighthouse": "lhci autorun --config=./lighthouserc.cjs"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "turbo": "^2.8.12"
