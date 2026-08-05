@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary, getProjectsFromDict } from "./dictionaries";
 import { buildPageMetadata } from "@/lib/seo";
-import { isLocale, site } from "@/lib/site";
+import { isLocale, site, withLocale } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -67,13 +67,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             style={{ animationDelay: "220ms" }}
           >
             <Link
-              href={`/${locale}/projects`}
+              href={withLocale(locale, "/projects")}
               className="rounded-full bg-[var(--accent)] px-5 py-3 font-mono text-sm font-medium text-[var(--accent-ink)] transition hover:bg-[var(--accent-deep)] hover:text-white sm:px-6"
             >
               {dict.home.ctaProjects}
             </Link>
             <Link
-              href={`/${locale}/contact`}
+              href={withLocale(locale, "/contact")}
               className="rounded-full border border-[var(--line)] bg-[var(--accent-dim)] px-5 py-3 font-mono text-sm font-medium text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] sm:px-6"
             >
               {dict.home.ctaContact}
@@ -115,7 +115,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             ))}
           </ul>
           <Link
-            href={`/${locale}/projects`}
+            href={withLocale(locale, "/projects")}
             className="mt-8 inline-flex font-mono text-sm text-[var(--accent)] transition hover:text-[var(--ink)] sm:mt-10"
           >
             {dict.home.selectedCta}

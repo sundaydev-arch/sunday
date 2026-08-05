@@ -13,19 +13,19 @@ describe("seo helpers", () => {
     expect(siteRoutes).toEqual(["/", "/about", "/projects", "/contact"]);
   });
 
-  it("builds absolute and locale URLs", () => {
+  it("builds absolute and locale URLs (default locale unprefixed)", () => {
     expect(absoluteUrl("/")).toBe("https://sundaydev.vercel.app");
     expect(localeUrl("en", "/about")).toBe(
-      "https://sundaydev.vercel.app/en/about",
+      "https://sundaydev.vercel.app/about",
     );
     expect(localeUrl("zh")).toBe("https://sundaydev.vercel.app/zh");
   });
 
   it("includes hreflang map with x-default", () => {
     expect(hreflangLanguages("/projects")).toMatchObject({
-      en: "https://sundaydev.vercel.app/en/projects",
+      en: "https://sundaydev.vercel.app/projects",
       zh: "https://sundaydev.vercel.app/zh/projects",
-      "x-default": "https://sundaydev.vercel.app/en/projects",
+      "x-default": "https://sundaydev.vercel.app/projects",
     });
   });
 
@@ -37,8 +37,8 @@ describe("seo helpers", () => {
       description: "Test description",
       absoluteTitle: true,
     });
-    expect(meta.alternates?.canonical).toBe("https://sundaydev.vercel.app/en");
-    expect(meta.openGraph?.url).toBe("https://sundaydev.vercel.app/en");
+    expect(meta.alternates?.canonical).toBe("https://sundaydev.vercel.app");
+    expect(meta.openGraph?.url).toBe("https://sundaydev.vercel.app");
     expect(meta.twitter).toMatchObject({ card: "summary_large_image" });
   });
 
@@ -47,5 +47,6 @@ describe("seo helpers", () => {
     expect(person["@type"]).toBe("Person");
     expect(person.name).toBe("Nathan Zhao");
     expect(website["@type"]).toBe("WebSite");
+    expect(website.url).toBe("https://sundaydev.vercel.app");
   });
 });

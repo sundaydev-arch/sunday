@@ -11,7 +11,7 @@
 ## Rules
 
 - Public name: **Nathan Zhao** (`site.name`). Handle display: `nathan`.
-- Default locale `/en`; Chinese `/zh`. Messages live in `apps/web/src/messages/`.
+- Default locale English at `/` (unprefixed); Chinese `/zh`. Messages live in `apps/web/src/messages/`.
 - Site URL: `https://sundaydev.vercel.app` (`site.url`).
 - Do not expose employers, school, phone, or private email on the public site (projects stay anonymized).
 - Contact UI stays terminal-themed; do not drop in stock shadcn Input/Button skins.

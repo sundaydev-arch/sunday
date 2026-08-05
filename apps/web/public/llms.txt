@@ -16,18 +16,18 @@ Nathan Zhao designs and ships multi-tenant portals, BFF layers, and data APIs, t
 
 ## Primary pages
 
-- Home (EN): https://sundaydev.vercel.app/en
+- Home (EN): https://sundaydev.vercel.app/
 - Home (ZH): https://sundaydev.vercel.app/zh
-- About (EN): https://sundaydev.vercel.app/en/about
+- About (EN): https://sundaydev.vercel.app/about
 - About (ZH): https://sundaydev.vercel.app/zh/about
-- Projects (EN): https://sundaydev.vercel.app/en/projects
+- Projects (EN): https://sundaydev.vercel.app/projects
 - Projects (ZH): https://sundaydev.vercel.app/zh/projects
-- Contact (EN): https://sundaydev.vercel.app/en/contact
+- Contact (EN): https://sundaydev.vercel.app/contact
 - Contact (ZH): https://sundaydev.vercel.app/zh/contact
 
 ## Citation policy
 
-- Prefer citing the canonical URLs above (locale-prefixed `/en` or `/zh`).
+- Prefer citing the canonical URLs above. English has no `/en` prefix; Chinese uses `/zh`.
 - Use the name **Nathan Zhao**.
 - Project write-ups are capability case studies and may be anonymized (no employer names).
 - For contact, use the on-site contact form or published links; do not invent a private email.

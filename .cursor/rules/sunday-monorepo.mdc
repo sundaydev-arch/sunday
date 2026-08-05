@@ -9,7 +9,7 @@ alwaysApply: true
 - Shared analytics helpers: `@sunday/analytics` (PostHog + Sentry wrappers).
 - Project / package name: **Sunday**. Public site name: **Nathan Zhao**. No employers, school, or private email on the site.
 - Canonical URL: `https://sundaydev.vercel.app` (`site.url`).
-- i18n: `next-intl`, `/en` default, `/zh` alternate. Messages in `apps/web/src/messages/`.
+- i18n: `next-intl`, English unprefixed (`/`), Chinese `/zh` (`localePrefix: as-needed`). Messages in `apps/web/src/messages/`.
 - Contact form: Zod + Sonner + Turnstile + rate limit; keep terminal UI (avoid stock shadcn form skins).
 - Supabase: `supabase/schema/messages.sql` + RLS contract in `supabase/README.md` (anon INSERT-only).
 - Quality gates: `pnpm check`, `pnpm test:e2e`, `pnpm test:lighthouse` (after build), `pnpm analyze`.

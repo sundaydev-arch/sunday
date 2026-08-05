@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("home", () => {
   test("loads English home and switches language", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await expect(page.getByText("Nathan Zhao").first()).toBeVisible();
 
     const nav = page.getByRole("navigation", { name: "Primary" });
@@ -18,7 +18,7 @@ test.describe("home", () => {
   });
 
   test("projects page renders anonymized cases", async ({ page }) => {
-    await page.goto("/en/projects");
+    await page.goto("/projects");
     await expect(
       page.getByRole("heading", { name: /Selected projects/i }),
     ).toBeVisible();

@@ -14,8 +14,13 @@ export function stripLocale(pathname: string): string {
   return stripped === "" ? "/" : stripped;
 }
 
+/**
+ * Locale-aware path. Default locale (`en`) has no prefix (`as-needed`):
+ * `en` + `/about` → `/about`, `zh` + `/about` → `/zh/about`.
+ */
 export function withLocale(lang: Locale, path = "/"): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
+  if (lang === defaultLocale) return normalized;
   if (normalized === "/") return `/${lang}`;
   return `/${lang}${normalized}`;
 }
