@@ -13,4 +13,6 @@ alwaysApply: true
 - Contact form: Zod + Sonner + Turnstile + rate limit; keep terminal UI (avoid stock shadcn form skins).
 - Supabase: `supabase/schema/messages.sql` + RLS contract in `supabase/README.md` (anon INSERT-only).
 - Quality gates: `pnpm check`, `pnpm test:e2e`, `pnpm test:lighthouse` (after build), `pnpm analyze`.
+- Format / lint: **Oxfmt** + **Oxlint** (`.oxfmtrc.json`, `.oxlintrc.json`). Not Prettier / ESLint.
+- Agent skills: `.agents/skills/` (source); `.cursor/skills/` symlinks for Cursor. Start with `seo-audit`.
 - Before Next.js API changes, read `apps/web/node_modules/next/dist/docs/`.

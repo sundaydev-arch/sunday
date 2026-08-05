@@ -38,18 +38,17 @@ pnpm test:e2e   # if UI / routing / layout changed
 
 ## Project layout
 
-| Path                         | Package                 |
-| ---------------------------- | ----------------------- |
-| `apps/web`                   | `@sunday/web`           |
-| `packages/analytics`         | `@sunday/analytics`     |
-| `packages/eslint-config`     | `@sunday/eslint-config` |
-| `packages/typescript-config` | shared TS configs       |
+| Path                         | Package             |
+| ---------------------------- | ------------------- |
+| `apps/web`                   | `@sunday/web`       |
+| `packages/analytics`         | `@sunday/analytics` |
+| `packages/typescript-config` | shared TS configs   |
 
 ## CI pipeline
 
 Every non-draft PR runs:
 
-1. **CI** — Prettier · ESLint · TypeScript (`next typegen` + `tsc`) · Vitest · Playwright
+1. **CI** — Oxfmt · Oxlint · TypeScript (`next typegen` + `tsc`) · Vitest · Playwright
 2. **Lighthouse** — Performance / a11y / SEO budgets (`.github/workflows/lighthouse.yml`)
 3. **PR** — Conventional PR title check (**skipped for Dependabot**)
 

@@ -26,7 +26,6 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "echo 'ok'",
     "test": "vitest run"
   }
 }
