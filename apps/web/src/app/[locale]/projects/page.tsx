@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjectList } from "@/components/project-list";
+import { buildPageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/site";
 import { getDictionary, getProjectsFromDict } from "../dictionaries";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[lang]/projects">): Promise<Metadata> {
-  const { lang } = await params;
-  if (!isLocale(lang)) return {};
-  const dict = await getDictionary(lang);
-  return { title: dict.nav.projects };
+}: PageProps<"/[locale]/projects">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
+  return buildPageMetadata({
+    lang: locale,
+    path: "/projects",
+    title: dict.meta.pages.projects.title,
+    description: dict.meta.pages.projects.description,
+  });
 }
 
 export default async function ProjectsPage({
   params,
-}: PageProps<"/[lang]/projects">) {
-  const { lang } = await params;
-  if (!isLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
+}: PageProps<"/[locale]/projects">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = await getDictionary(locale);
   const projects = getProjectsFromDict(dict);
 
   return (

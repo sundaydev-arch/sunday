@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import createNextIntlPlugin from "next-intl/plugin";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import bundleAnalyzer from "@next/bundle-analyzer";
 
 const appDir = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.join(appDir, "../..");
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -31,7 +33,7 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-export default withSentryConfig(withBundleAnalyzer(nextConfig), {
+export default withSentryConfig(withBundleAnalyzer(withNextIntl(nextConfig)), {
   ...(process.env.SENTRY_ORG ? { org: process.env.SENTRY_ORG } : {}),
   ...(process.env.SENTRY_PROJECT
     ? { project: process.env.SENTRY_PROJECT }

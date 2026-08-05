@@ -2,24 +2,30 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContactForm } from "@/components/contact-form";
+import { buildPageMetadata } from "@/lib/seo";
 import { isLocale, site } from "@/lib/site";
 import { getDictionary } from "../dictionaries";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[lang]/contact">): Promise<Metadata> {
-  const { lang } = await params;
-  if (!isLocale(lang)) return {};
-  const dict = await getDictionary(lang);
-  return { title: dict.nav.contact };
+}: PageProps<"/[locale]/contact">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
+  return buildPageMetadata({
+    lang: locale,
+    path: "/contact",
+    title: dict.meta.pages.contact.title,
+    description: dict.meta.pages.contact.description,
+  });
 }
 
 export default async function ContactPage({
   params,
-}: PageProps<"/[lang]/contact">) {
-  const { lang } = await params;
-  if (!isLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
+}: PageProps<"/[locale]/contact">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = await getDictionary(locale);
 
   return (
     <div className="geek-shell px-4 pt-32 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
@@ -53,14 +59,14 @@ export default async function ContactPage({
               </Link>
             </p>
             <p className="break-all sm:break-normal">
-              {dict.contact.blog}:{" "}
+              {dict.contact.website}:{" "}
               <Link
-                href={site.social.blog}
+                href={site.social.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[var(--accent)] underline decoration-[var(--line)] underline-offset-4 transition hover:decoration-[var(--accent)]"
               >
-                sundaydev-arch.github.io
+                sundaydev.vercel.app
               </Link>
             </p>
           </div>
@@ -72,7 +78,13 @@ export default async function ContactPage({
           <p className="mb-6 font-mono text-xs text-[var(--muted)]">
             <span className="text-[var(--accent)]">POST</span> /api/contact
           </p>
-          <ContactForm labels={dict.contact.fields} />
+          <ContactForm
+            labels={{
+              ...dict.contact.fields,
+              validation: dict.contact.validation,
+            }}
+            turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          />
         </div>
       </div>
     </div>

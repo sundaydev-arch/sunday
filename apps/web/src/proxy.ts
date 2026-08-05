@@ -1,9 +1,8 @@
+import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
-import { defaultLocale, locales } from "@/lib/site";
+import { routing } from "@/i18n/routing";
 
-function hasFileExtension(pathname: string) {
-  return pathname.split("/").pop()?.includes(".") ?? false;
-}
+const handleI18n = createMiddleware(routing);
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -13,22 +12,12 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/ingest") ||
     pathname.startsWith("/sentry-tunnel") ||
-    hasFileExtension(pathname)
+    pathname.startsWith("/.well-known")
   ) {
     return NextResponse.next();
   }
 
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-
-  if (pathnameHasLocale) {
-    return NextResponse.next();
-  }
-
-  const url = request.nextUrl.clone();
-  url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.redirect(url);
+  return handleI18n(request);
 }
 
 export const config = {

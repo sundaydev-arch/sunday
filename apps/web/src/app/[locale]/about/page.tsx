@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, site } from "@/lib/site";
+import { buildPageMetadata } from "@/lib/seo";
 import { getDictionary } from "../dictionaries";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[lang]/about">): Promise<Metadata> {
-  const { lang } = await params;
-  if (!isLocale(lang)) return {};
-  const dict = await getDictionary(lang);
-  return { title: dict.nav.about };
+}: PageProps<"/[locale]/about">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
+  return buildPageMetadata({
+    lang: locale,
+    path: "/about",
+    title: dict.meta.pages.about.title,
+    description: dict.meta.pages.about.description,
+  });
 }
 
 export default async function AboutPage({
   params,
-}: PageProps<"/[lang]/about">) {
-  const { lang } = await params;
-  if (!isLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
+}: PageProps<"/[locale]/about">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = await getDictionary(locale);
 
   return (
     <div className="geek-shell px-4 pt-32 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
