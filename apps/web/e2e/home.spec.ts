@@ -4,11 +4,17 @@ test.describe("home", () => {
   test("loads English home and switches language", async ({ page }) => {
     await page.goto("/en");
     await expect(page.getByText("Sunday").first()).toBeVisible();
-    await expect(page.getByRole("link", { name: "Projects" })).toBeVisible();
 
-    await page.getByRole("link", { name: "zh" }).click();
+    const nav = page.getByRole("navigation", { name: "Primary" });
+    await expect(
+      nav.getByRole("link", { name: "Projects", exact: true }),
+    ).toBeVisible();
+
+    await page.getByRole("link", { name: "zh", exact: true }).click();
     await expect(page).toHaveURL(/\/zh/);
-    await expect(page.getByRole("link", { name: "项目" })).toBeVisible();
+    await expect(
+      nav.getByRole("link", { name: "项目", exact: true }),
+    ).toBeVisible();
   });
 
   test("projects page renders anonymized cases", async ({ page }) => {
