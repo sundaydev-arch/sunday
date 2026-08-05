@@ -1,0 +1,24 @@
+name: Docs / tooling
+description: Documentation, CI, monorepo tooling
+title: "[chore]: "
+labels: ["docs", "triage"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Documentation
+        - CI / workflows
+        - ESLint / Prettier
+        - Tests
+        - Agent configs
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+    validations:
+      required: true

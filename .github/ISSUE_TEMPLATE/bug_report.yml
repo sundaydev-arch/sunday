@@ -1,0 +1,43 @@
+name: Bug report
+description: Something is broken or unexpected
+title: "[bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting an issue. Please avoid sharing private personal data.
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      description: Clear and concise description of what went wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Browser / OS / Node version if relevant
+      placeholder: Chrome 131 · macOS · Node 22
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Logs, screenshots, related PRs.

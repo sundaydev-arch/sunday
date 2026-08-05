@@ -1,0 +1,32 @@
+{
+  "name": "@sunday/analytics",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./events": "./src/events.ts",
+    "./posthog": "./src/posthog.ts",
+    "./posthog-options": "./src/posthog-options.ts",
+    "./sentry": "./src/sentry.ts",
+    "./sentry-options": "./src/sentry-options.ts"
+  },
+  "peerDependencies": {
+    "@sentry/nextjs": "^10",
+    "posthog-js": "^1",
+    "react": "^19"
+  },
+  "devDependencies": {
+    "@sentry/nextjs": "^10.69.0",
+    "@sunday/typescript-config": "workspace:*",
+    "@types/react": "^19",
+    "posthog-js": "^1.412.1",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'ok'",
+    "test": "vitest run"
+  }
+}
