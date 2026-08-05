@@ -4,10 +4,10 @@ module.exports = {
     collect: {
       numberOfRuns: 1,
       url: [
-        "http://127.0.0.1:3000/en",
-        "http://127.0.0.1:3000/en/about",
-        "http://127.0.0.1:3000/en/projects",
-        "http://127.0.0.1:3000/en/contact",
+        "http://127.0.0.1:3000/",
+        "http://127.0.0.1:3000/about",
+        "http://127.0.0.1:3000/projects",
+        "http://127.0.0.1:3000/contact",
       ],
       startServerCommand:
         "pnpm --filter @sunday/web exec next start --port 3000",

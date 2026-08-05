@@ -6,7 +6,7 @@ Thanks for helping improve this open-source personal site (**Nathan Zhao** on th
 
 1. Read [AGENTS.md](./AGENTS.md) for monorepo conventions.
 2. Keep the public site free of employers, school, phone, or private email (project case studies stay anonymized).
-3. Default locale is English (`/en`); Chinese is `/zh`.
+3. Default locale is English (`/`); Chinese is `/zh` (`localePrefix: as-needed`).
 4. Public brand name is **Nathan Zhao**.
 
 ## Setup

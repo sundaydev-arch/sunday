@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("a11y + visuals", () => {
   test("home has no serious axe violations", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     const results = await new AxeBuilder({ page })
       .disableRules(["color-contrast"])
       .analyze();
@@ -14,7 +14,7 @@ test.describe("a11y + visuals", () => {
   });
 
   test("contact screenshot smoke", async ({ page }) => {
-    await page.goto("/en/contact");
+    await page.goto("/contact");
     await expect(page.getByRole("heading", { name: /ping me/i })).toBeVisible();
     await page.screenshot({
       path: "test-results/contact-en.png",

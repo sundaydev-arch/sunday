@@ -10,7 +10,7 @@ Read this before auditing. Live: https://sundaydev.vercel.app/
 | Public brand   | **Nathan Zhao** (`site.name`)                                   |
 | Handle         | `nathan`                                                        |
 | Canonical      | `https://sundaydev.vercel.app` (`site.url`)                     |
-| Locales        | `/en` (default), `/zh` via `next-intl` `[locale]`               |
+| Locales        | English unprefixed (`/`), Chinese `/zh` (`as-needed`)           |
 | Cal.com        | `NEXT_PUBLIC_CAL_LINK` (e.g. `nathan-zhao`) embedded on Contact |
 
 Do **not** recommend putting employers, school, phone, or private email on public pages.
@@ -27,7 +27,7 @@ Do **not** recommend putting employers, school, phone, or private email on publi
 
 ## Key routes
 
-`/`, `/about`, `/projects`, `/contact` (each under `/en` and `/zh`)
+`/`, `/about`, `/projects`, `/contact` (Chinese: `/zh`, `/zh/about`, …)
 
 ## Audit focus for this site
 

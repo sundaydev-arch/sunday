@@ -20,10 +20,13 @@ describe("site config", () => {
     expect(isLocale("fr")).toBe(false);
   });
 
-  it("strips and rebuilds locale prefixes", () => {
+  it("strips and rebuilds locale prefixes (as-needed)", () => {
     expect(stripLocale("/en")).toBe("/");
     expect(stripLocale("/zh/projects")).toBe("/projects");
-    expect(withLocale("en")).toBe("/en");
+    expect(stripLocale("/about")).toBe("/about");
+    expect(withLocale("en")).toBe("/");
+    expect(withLocale("en", "/about")).toBe("/about");
+    expect(withLocale("zh")).toBe("/zh");
     expect(withLocale("zh", "/about")).toBe("/zh/about");
   });
 });

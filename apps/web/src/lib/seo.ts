@@ -18,7 +18,7 @@ export function absoluteUrl(path = "/"): string {
   return `${site.url}${normalized}`;
 }
 
-/** Absolute locale URL, e.g. `/about` + `en` → `https://…/en/about` */
+/** Absolute locale URL, e.g. `en` + `/about` → `https://…/about` (default locale unprefixed). */
 export function localeUrl(
   lang: Locale,
   path: SiteRoute | string = "/",

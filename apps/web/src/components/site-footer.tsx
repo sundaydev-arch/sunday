@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getCalUrl } from "@/lib/cal";
-import { site, type Locale } from "@/lib/site";
+import { site, withLocale, type Locale } from "@/lib/site";
 
 export function SiteFooter({
   lang,
@@ -50,7 +50,7 @@ export function SiteFooter({
             schedule
           </Link>
           <Link
-            href={`/${lang}/contact`}
+            href={withLocale(lang, "/contact")}
             className="transition-colors hover:text-[var(--accent)]"
           >
             contact

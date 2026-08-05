@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: site.name,
     description:
       "Personal site for Nathan Zhao, a fullstack engineer building portals, APIs, and product interfaces.",
-    start_url: "/en",
+    start_url: "/",
     display: "standalone",
     background_color: "#0b0908",
     theme_color: "#d4926a",
