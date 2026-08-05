@@ -9,7 +9,8 @@ module.exports = {
         "http://127.0.0.1:3000/en/projects",
         "http://127.0.0.1:3000/en/contact",
       ],
-      startServerCommand: "pnpm --filter @sunday/web exec next start --port 3000",
+      startServerCommand:
+        "pnpm --filter @sunday/web exec next start --port 3000",
       startServerReadyPattern: "Ready",
       startServerReadyTimeout: 120000,
     },

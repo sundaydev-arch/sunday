@@ -19,7 +19,10 @@ export function absoluteUrl(path = "/"): string {
 }
 
 /** Absolute locale URL, e.g. `/about` + `en` → `https://…/en/about` */
-export function localeUrl(lang: Locale, path: SiteRoute | string = "/"): string {
+export function localeUrl(
+  lang: Locale,
+  path: SiteRoute | string = "/",
+): string {
   return absoluteUrl(withLocale(lang, path));
 }
 

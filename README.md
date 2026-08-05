@@ -28,53 +28,53 @@ pnpm dev
 
 Then:
 
-1. **Supabase** — apply [`supabase/schema/messages.sql`](./supabase/README.md) (anon INSERT-only RLS)  
-2. **Turnstile** — site + secret keys in env (production)  
-3. **Resend** (optional) — email notify  
+1. **Supabase** — apply [`supabase/schema/messages.sql`](./supabase/README.md) (anon INSERT-only RLS)
+2. **Turnstile** — site + secret keys in env (production)
+3. **Resend** (optional) — email notify
 4. **Vercel** — same env vars; repo-root `vercel.json` builds `@sunday/web`
 
 ## Scripts
 
-| Command                | Description                          |
-| ---------------------- | ------------------------------------ |
-| `pnpm dev`             | Next.js dev server                   |
-| `pnpm build`           | Production build (turbo)             |
-| `pnpm check`           | format + lint + typecheck + unit     |
-| `pnpm test`            | Unit tests                           |
-| `pnpm test:e2e`        | Playwright (+ axe)                   |
+| Command                | Description                            |
+| ---------------------- | -------------------------------------- |
+| `pnpm dev`             | Next.js dev server                     |
+| `pnpm build`           | Production build (turbo)               |
+| `pnpm check`           | format + lint + typecheck + unit       |
+| `pnpm test`            | Unit tests                             |
+| `pnpm test:e2e`        | Playwright (+ axe)                     |
 | `pnpm test:lighthouse` | Lighthouse CI (run `pnpm build` first) |
-| `pnpm analyze`         | Bundle analyzer                      |
-| `pnpm format`          | Prettier write                       |
+| `pnpm analyze`         | Bundle analyzer                        |
+| `pnpm format`          | Prettier write                         |
 
 `pnpm typecheck` runs `next typegen` then `tsc` (needed for `PageProps` / `LayoutProps`).
 
 ## Tooling
 
-| Concern        | Tool                                                |
-| -------------- | --------------------------------------------------- |
-| App            | Next.js 16 App Router · Tailwind 4 · `next-intl`    |
-| Contact        | Zod · Sonner · Turnstile · IP rate limit · Supabase |
-| Observability  | Sentry · PostHog (`@sunday/analytics`)              |
-| Quality        | ESLint · Prettier · Vitest · Playwright · LHCI      |
-| Monorepo       | pnpm · Turborepo                                    |
+| Concern       | Tool                                                |
+| ------------- | --------------------------------------------------- |
+| App           | Next.js 16 App Router · Tailwind 4 · `next-intl`    |
+| Contact       | Zod · Sonner · Turnstile · IP rate limit · Supabase |
+| Observability | Sentry · PostHog (`@sunday/analytics`)              |
+| Quality       | ESLint · Prettier · Vitest · Playwright · LHCI      |
+| Monorepo      | pnpm · Turborepo                                    |
 
 ## Environment
 
 Copy from [`apps/web/.env.example`](./apps/web/.env.example):
 
-| Vars | Purpose |
-| ---- | ------- |
-| `NEXT_PUBLIC_SUPABASE_*` | Contact inbox ([migration](./supabase/README.md)) |
-| `NEXT_PUBLIC_SENTRY_DSN` (+ optional auth/org/project) | Errors |
-| `NEXT_PUBLIC_POSTHOG_*` | Analytics |
-| `RESEND_*` / `CONTACT_NOTIFY_*` | Email notify — `CONTACT_NOTIFY_FROM` must be an **email**, not a URL |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Captcha (required in production) |
+| Vars                                                      | Purpose                                                              |
+| --------------------------------------------------------- | -------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_*`                                  | Contact inbox ([migration](./supabase/README.md))                    |
+| `NEXT_PUBLIC_SENTRY_DSN` (+ optional auth/org/project)    | Errors                                                               |
+| `NEXT_PUBLIC_POSTHOG_*`                                   | Analytics                                                            |
+| `RESEND_*` / `CONTACT_NOTIFY_*`                           | Email notify — `CONTACT_NOTIFY_FROM` must be an **email**, not a URL |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Captcha (required in production)                                     |
 
 Never commit `.env.local`. Never put `service_role` in `NEXT_PUBLIC_*`.
 
 ## SEO / GEO
 
-- Canonical + `hreflang` · Open Graph · `sitemap.xml` · `robots.txt` · JSON-LD  
+- Canonical + `hreflang` · Open Graph · `sitemap.xml` · `robots.txt` · JSON-LD
 - [`/llms.txt`](./apps/web/public/llms.txt) and `/.well-known/llms.txt`
 
 ## Contributing

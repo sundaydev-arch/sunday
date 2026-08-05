@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  clientIpFromHeaders,
-  hashIp,
-  rateLimit,
-} from "@/lib/rate-limit";
+import { clientIpFromHeaders, hashIp, rateLimit } from "@/lib/rate-limit";
 
 describe("rateLimit", () => {
   it("allows up to the limit then blocks", () => {

@@ -9,7 +9,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     siteRoutes.map((path) => ({
       url: `${site.url}${withLocale(lang, path)}`,
       lastModified,
-      changeFrequency: path === "/" ? ("weekly" as const) : ("monthly" as const),
+      changeFrequency:
+        path === "/" ? ("weekly" as const) : ("monthly" as const),
       priority: path === "/" ? 1 : 0.7,
       alternates: {
         languages: Object.fromEntries(

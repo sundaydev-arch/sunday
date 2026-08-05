@@ -6,11 +6,7 @@ import {
   toContactMessage,
 } from "@/lib/contact";
 import { notifyContactMessage } from "@/lib/notify-contact";
-import {
-  clientIpFromHeaders,
-  hashIp,
-  rateLimit,
-} from "@/lib/rate-limit";
+import { clientIpFromHeaders, hashIp, rateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 
@@ -49,10 +45,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const captcha = await verifyTurnstileToken(
-      parsed.data.turnstileToken,
-      ip,
-    );
+    const captcha = await verifyTurnstileToken(parsed.data.turnstileToken, ip);
     if (!captcha.ok) {
       return NextResponse.json(
         { error: contactErrorMessages[captcha.error] },

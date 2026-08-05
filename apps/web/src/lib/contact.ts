@@ -1,11 +1,7 @@
 import { z } from "zod";
 
 export const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "missing_fields")
-    .max(120, "name_too_long"),
+  name: z.string().trim().min(1, "missing_fields").max(120, "name_too_long"),
   email: z
     .string()
     .trim()
@@ -35,9 +31,7 @@ export type ContactValidationError =
   | "captcha_failed"
   | "rate_limited";
 
-export function parseContactBody(
-  input: unknown,
-):
+export function parseContactBody(input: unknown):
   | { ok: true; data: ContactPayload }
   | {
       ok: false;
