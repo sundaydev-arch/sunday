@@ -16,7 +16,9 @@ export function getTurnstileSiteKey(): string | undefined {
 export async function verifyTurnstileToken(
   token: unknown,
   ip?: string,
-): Promise<{ ok: true } | { ok: false; error: "captcha_required" | "captcha_failed" }> {
+): Promise<
+  { ok: true } | { ok: false; error: "captcha_required" | "captcha_failed" }
+> {
   if (!isTurnstileConfigured()) {
     return { ok: true };
   }

@@ -22,7 +22,8 @@ declare global {
 }
 
 const SCRIPT_ID = "cf-turnstile-script";
-const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const SCRIPT_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
 type Props = {
   siteKey: string;
@@ -75,13 +76,7 @@ export function TurnstileField({ siteKey, onToken }: Props) {
     };
   }, [siteKey, onToken]);
 
-  return (
-    <div
-      ref={hostRef}
-      className="min-h-[65px]"
-      data-testid="turnstile"
-    />
-  );
+  return <div ref={hostRef} className="min-h-[65px]" data-testid="turnstile" />;
 }
 
 export function resetTurnstile() {

@@ -82,10 +82,7 @@ export function ContactForm({
         const key = issue.path[0];
         if (key !== "name" && key !== "email" && key !== "message") continue;
         if (next[key]) continue;
-        next[key] = messageFor(
-          issue.message as ContactValidationError,
-          labels,
-        );
+        next[key] = messageFor(issue.message as ContactValidationError, labels);
       }
       setFieldErrors(next);
       toast.error(labels.error, {

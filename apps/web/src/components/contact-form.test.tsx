@@ -51,13 +51,18 @@ describe("ContactForm", () => {
 
   it("posts a valid payload", async () => {
     const user = userEvent.setup();
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(JSON.stringify({ ok: true }), { status: 200 }),
-    );
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(
+        new Response(JSON.stringify({ ok: true }), { status: 200 }),
+      );
 
     render(<ContactForm labels={labels} />);
     await user.type(screen.getByPlaceholderText("alias"), "Ada");
-    await user.type(screen.getByPlaceholderText("you@domain.dev"), "ada@example.com");
+    await user.type(
+      screen.getByPlaceholderText("you@domain.dev"),
+      "ada@example.com",
+    );
     await user.type(screen.getByPlaceholderText("payload..."), "Hello there");
     await user.click(screen.getByRole("button", { name: /submit/i }));
 

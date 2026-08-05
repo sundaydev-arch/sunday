@@ -25,7 +25,10 @@ export function rateLimit(
 
   if (entry.timestamps.length >= limit) {
     const oldest = entry.timestamps[0] ?? now;
-    const retryAfterSec = Math.max(1, Math.ceil((windowMs - (now - oldest)) / 1000));
+    const retryAfterSec = Math.max(
+      1,
+      Math.ceil((windowMs - (now - oldest)) / 1000),
+    );
     store.set(key, entry);
     return { ok: false, remaining: 0, retryAfterSec };
   }
@@ -42,9 +45,7 @@ export function clientIpFromHeaders(headers: Headers): string {
     if (first) return first;
   }
   return (
-    headers.get("cf-connecting-ip") ||
-    headers.get("x-real-ip") ||
-    "unknown"
+    headers.get("cf-connecting-ip") || headers.get("x-real-ip") || "unknown"
   );
 }
 
