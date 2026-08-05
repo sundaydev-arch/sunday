@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/json-ld";
+import { AppToaster } from "@/components/app-toaster";
 import { PillNav } from "@/components/pill-nav";
 import { PostHogProvider } from "@/components/posthog-provider";
 import { SiteFooter } from "@/components/site-footer";
+import { buildSiteJsonLd } from "@/lib/seo";
 import { isLocale, locales, site } from "@/lib/site";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
@@ -31,11 +34,34 @@ export async function generateMetadata({
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
   return {
+    metadataBase: new URL(site.url),
     title: {
       default: dict.meta.title,
       template: `%s · ${site.name}`,
     },
     description: dict.meta.description,
+    applicationName: site.name,
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    publisher: site.name,
+    keywords: [
+      site.name,
+      site.jobTitle,
+      "TypeScript",
+      "Next.js",
+      "NestJS",
+      "FastAPI",
+      "Go",
+      "fullstack",
+      "portfolio",
+    ],
+    category: "technology",
+    referrer: "origin-when-cross-origin",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
   };
 }
 
@@ -47,6 +73,7 @@ export default async function RootLayout({
   if (!isLocale(lang)) notFound();
 
   const dict = await getDictionary(lang);
+  const jsonLd = buildSiteJsonLd(lang, dict.meta.description);
 
   return (
     <html
@@ -55,7 +82,9 @@ export default async function RootLayout({
       className={`${display.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-mono text-[var(--ink)]">
+        <JsonLd data={jsonLd} />
         <PostHogProvider>
+          <AppToaster />
           <PillNav
             lang={lang}
             labels={{

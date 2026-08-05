@@ -1,7 +1,25 @@
 {
   "meta": {
     "title": "Sunday — 全栈工程师",
-    "description": "Sunday — 全栈工程师，专注多租户 Portal、API 与清晰的产品界面。TypeScript · Next.js · NestJS · FastAPI · Go。"
+    "description": "Sunday — 全栈工程师，专注多租户 Portal、API 与清晰的产品界面。TypeScript · Next.js · NestJS · FastAPI · Go。",
+    "pages": {
+      "home": {
+        "title": "Sunday — 全栈工程师",
+        "description": "Sunday 是全栈工程师，交付多租户 Portal、BFF 与数据 API，技术栈覆盖 TypeScript、Next.js、NestJS、FastAPI 与 Go。"
+      },
+      "about": {
+        "title": "关于",
+        "description": "关于 Sunday — 关注系统边界与真实界面的全栈工程师，覆盖鉴权、配额、API、缓存与线上治理。公开资料保持隐私优先。"
+      },
+      "projects": {
+        "title": "项目",
+        "description": "Sunday 精选匿名化案例：多租户 Portal、SaaS 前端平台，以及微前端 CMS 拆分与交付。"
+      },
+      "contact": {
+        "title": "联系",
+        "description": "联系 Sunday，洽谈全栈岗位与协作。请附上岗位、技术栈与时间线。"
+      }
+    }
   },
   "nav": {
     "home": "首页",
@@ -61,7 +79,7 @@
     "title": "联系我",
     "blurb": "发一段 brief 即可——岗位、技术栈、时间线。消息写入联系收件箱。",
     "github": "github",
-    "blog": "blog",
+    "website": "个人网站",
     "formHint": "POST /api/contact",
     "fields": {
       "name": "--name",
@@ -72,9 +90,16 @@
       "messagePlaceholder": "payload...",
       "submit": "submit --force",
       "sending": "sending...",
-      "success": "200 ok — 已入队。",
-      "error": "请求失败，请重试。",
+      "success": "已发送 — 收到后我会尽快回复。",
+      "error": "发送失败，请重试。",
       "network": "网络错误，请重试。"
+    },
+    "validation": {
+      "missing_fields": "请填写必填项。",
+      "invalid_email": "请输入有效邮箱。",
+      "invalid_body": "请求无效。",
+      "name_too_long": "姓名过长。",
+      "message_too_long": "消息过长。"
     }
   },
   "footer": {

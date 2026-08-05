@@ -1,7 +1,24 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { getDictionary, getProjectsFromDict } from "./dictionaries";
-import { isLocale, site } from "@/lib/site";
 import { notFound } from "next/navigation";
+import { getDictionary, getProjectsFromDict } from "./dictionaries";
+import { buildPageMetadata } from "@/lib/seo";
+import { isLocale, site } from "@/lib/site";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return buildPageMetadata({
+    lang,
+    path: "/",
+    title: dict.meta.pages.home.title,
+    description: dict.meta.pages.home.description,
+    absoluteTitle: true,
+  });
+}
 
 export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;

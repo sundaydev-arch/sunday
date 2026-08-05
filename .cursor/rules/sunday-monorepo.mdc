@@ -8,6 +8,8 @@ alwaysApply: true
 - pnpm + Turborepo monorepo. App lives in `apps/web` (`@sunday/web`).
 - Shared analytics helpers: `@sunday/analytics` (PostHog + Sentry wrappers).
 - Public site must stay privacy-safe: brand **Sunday** only — no real name, employers, school, or private email.
+- Canonical URL: `https://sundaydev.vercel.app` (`site.url`).
 - i18n: `/en` default, `/zh` alternate. Dictionaries in `apps/web/src/app/[lang]/dictionaries/`.
-- Quality gates: `pnpm check` (lint/type/unit), `pnpm test:e2e` (Playwright), `pnpm analyze` (bundle).
+- Contact form: Zod + Sonner; keep terminal UI (avoid stock shadcn form skins).
+- Quality gates: `pnpm check` (lint/type/unit — typecheck runs `next typegen`), `pnpm test:e2e` (Playwright), `pnpm analyze` (bundle).
 - Before Next.js API changes, read `apps/web/node_modules/next/dist/docs/`.

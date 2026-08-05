@@ -13,6 +13,7 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/ingest") ||
     pathname.startsWith("/sentry-tunnel") ||
+    pathname.startsWith("/.well-known") ||
     hasFileExtension(pathname)
   ) {
     return NextResponse.next();
@@ -32,5 +33,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|ingest|sentry-tunnel|.*\\..*).*)"],
+  matcher: [
+    "/((?!_next|api|ingest|sentry-tunnel|\\.well-known|.*\\..*).*)",
+  ],
 };

@@ -24,10 +24,25 @@ export function withLocale(lang: Locale, path = "/"): string {
 export const site = {
   name: "Sunday",
   handle: "sunday",
+  jobTitle: "Fullstack Engineer",
+  /** Canonical production origin (no trailing slash) */
+  url: "https://sundaydev.vercel.app",
   social: {
     github: "https://github.com/sundaydev-arch",
-    blog: "https://sundaydev-arch.github.io/",
+    website: "https://sundaydev.vercel.app/",
   },
+  /** Topics for schema.org / GEO — capability-focused, no employers */
+  knowsAbout: [
+    "TypeScript",
+    "Next.js",
+    "React",
+    "NestJS",
+    "FastAPI",
+    "Go",
+    "multi-tenant portals",
+    "BFF",
+    "Open API",
+  ],
 } as const;
 
 export type Project = {

@@ -48,10 +48,10 @@ pnpm test:e2e   # if UI / routing / layout changed
 
 Every non-draft PR runs:
 
-1. **CI** — Prettier · ESLint · TypeScript · Vitest · Playwright
-2. **PR** — Conventional PR title check
+1. **CI** — Prettier · ESLint · TypeScript (`next typegen` + `tsc`) · Vitest · Playwright
+2. **PR** — Conventional PR title check (**skipped for Dependabot**)
 
-Dependabot opens weekly dependency PRs.
+Dependabot opens grouped npm PRs weekly and GitHub Actions PRs monthly. Prefer reviewing Action major bumps separately from npm groups.
 
 ## Reporting issues
 

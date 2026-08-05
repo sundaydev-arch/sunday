@@ -1,6 +1,8 @@
 # Sunday — personal site (pnpm monorepo)
 
-Modern Next.js portfolio with EN/ZH routing, Sentry + PostHog, and a full quality toolchain.
+Modern Next.js portfolio with EN/ZH routing, Sentry + PostHog, contact inbox (Supabase + Resend), and a full quality toolchain.
+
+**Live:** [https://sundaydev.vercel.app/](https://sundaydev.vercel.app/) · **Source:** [sundaydev-arch/sunday](https://github.com/sundaydev-arch/sunday)
 
 ```text
 sunday/
@@ -12,7 +14,7 @@ sunday/
   .github/
     PULL_REQUEST_TEMPLATE.md
     workflows/ci.yml          # lint · typecheck · unit · e2e
-    workflows/pr.yml          # conventional PR title
+    workflows/pr.yml          # conventional PR title (skips Dependabot)
     ISSUE_TEMPLATE/
     dependabot.yml
 ```
@@ -23,12 +25,13 @@ sunday/
 | -------------------------------- | ------------------------------------------------------------- |
 | Lint / a11y-ish web vitals rules | ESLint 9 + `eslint-config-next` (core-web-vitals)             |
 | Format                           | Prettier + Tailwind plugin                                    |
-| Types                            | TypeScript (`pnpm typecheck`)                                 |
+| Types                            | TypeScript (`next typegen` + `tsc`, via `pnpm typecheck`)     |
 | Unit tests                       | Vitest + Testing Library                                      |
 | E2E + perf smoke                 | Playwright                                                    |
 | Bundle size                      | `@next/bundle-analyzer` (`pnpm analyze`)                      |
 | Errors / traces                  | Sentry                                                        |
 | Product analytics                | PostHog                                                       |
+| Contact form                     | Zod validation · Sonner toasts · Supabase `messages` · Resend |
 | Task graph                       | Turborepo                                                     |
 | Agents                           | `AGENTS.md`, `CLAUDE.md`, `.codex/AGENTS.md`, `.cursor/rules` |
 
@@ -56,15 +59,29 @@ pnpm dev
 
 ## Environment
 
-See `apps/web/.env.example` for Supabase, Sentry, and PostHog keys.
+See `apps/web/.env.example` for:
+
+- Supabase (`NEXT_PUBLIC_SUPABASE_*`) — contact inbox
+- Sentry / PostHog — observability
+- Resend (`RESEND_API_KEY`, `CONTACT_NOTIFY_*`) — optional email notify (`CONTACT_NOTIFY_FROM` must be an **email**, not the site URL)
+
+Vercel: Project → Settings → Environment Variables (same keys). Repo-root `vercel.json` builds `@sunday/web`.
 
 ## Deploy (Vercel)
 
-Import the repo root. `vercel.json` runs `pnpm install` + `pnpm --filter @sunday/web build`. Add the same env vars in the Vercel project.
+Import the repo root. Production URL: [https://sundaydev.vercel.app/](https://sundaydev.vercel.app/).
+
+## SEO / GEO
+
+- Per-page metadata with canonical + `hreflang` (`en` / `zh` / `x-default`)
+- Open Graph + Twitter cards (`opengraph-image.tsx`)
+- `sitemap.xml` · `robots.txt` · web app `manifest`
+- JSON-LD (`Person` + `WebSite`, privacy-safe brand only)
+- Generative engines: [`/llms.txt`](./apps/web/public/llms.txt) and `/.well-known/llms.txt`
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs use the template under `.github/PULL_REQUEST_TEMPLATE.md`. CI + conventional PR title checks run on every non-draft pull request.
+See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs use the template under `.github/PULL_REQUEST_TEMPLATE.md`. CI runs on every non-draft pull request; conventional PR titles are required for human PRs (Dependabot is skipped).
 
 ## License
 

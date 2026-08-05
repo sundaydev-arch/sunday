@@ -31,12 +31,12 @@ export function SiteFooter({
             github
           </Link>
           <Link
-            href={site.social.blog}
+            href={site.social.website}
             className="transition-colors hover:text-[var(--accent)]"
             target="_blank"
             rel="noopener noreferrer"
           >
-            blog
+            website
           </Link>
           <Link
             href={`/${lang}/contact`}

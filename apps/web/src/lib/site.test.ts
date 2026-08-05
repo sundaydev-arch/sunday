@@ -6,6 +6,10 @@ describe("site config", () => {
     expect(site.name).toBe("Sunday");
     expect(site.handle).toBe("sunday");
     expect(site.social.github).toContain("sundaydev-arch");
+    expect(site.url).toBe("https://sundaydev.vercel.app");
+    expect(site.social.website).toBe("https://sundaydev.vercel.app/");
+    expect(site.jobTitle).toBe("Fullstack Engineer");
+    expect(site.knowsAbout).toContain("TypeScript");
   });
 
   it("supports en and zh locales", () => {

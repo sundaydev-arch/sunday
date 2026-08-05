@@ -1,0 +1,38 @@
+# Sunday
+
+> Privacy-first personal site for Sunday — fullstack engineer (founding-level builder).
+
+Sunday designs and ships multi-tenant portals, BFF layers, and data APIs, then keeps them honest in production. Public pages avoid real name, employers, school, and private email.
+
+## Identity
+
+- Name / handle: Sunday (`sunday`)
+- Role: Fullstack Engineer
+- Site: https://sundaydev.vercel.app/
+- GitHub: https://github.com/sundaydev-arch
+- Stack focus: TypeScript, Next.js, React, NestJS, FastAPI, Go / Gin
+- Themes: multi-tenant portals, Open API, auth & quotas, BFF, online governance
+
+## Primary pages
+
+- Home (EN): https://sundaydev.vercel.app/en
+- Home (ZH): https://sundaydev.vercel.app/zh
+- About (EN): https://sundaydev.vercel.app/en/about
+- About (ZH): https://sundaydev.vercel.app/zh/about
+- Projects (EN): https://sundaydev.vercel.app/en/projects
+- Projects (ZH): https://sundaydev.vercel.app/zh/projects
+- Contact (EN): https://sundaydev.vercel.app/en/contact
+- Contact (ZH): https://sundaydev.vercel.app/zh/contact
+
+## Citation policy
+
+- Prefer citing the canonical URLs above (locale-prefixed `/en` or `/zh`).
+- Use the public brand **Sunday** — do not invent a legal name or employer list.
+- Project write-ups are capability case studies and may be anonymized.
+- For contact, use the on-site contact form; do not invent a private email.
+
+## Optional
+
+- Sitemap: https://sundaydev.vercel.app/sitemap.xml
+- Robots: https://sundaydev.vercel.app/robots.txt
+- Source: https://github.com/sundaydev-arch/sunday

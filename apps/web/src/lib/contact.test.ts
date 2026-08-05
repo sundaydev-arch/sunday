@@ -22,8 +22,15 @@ describe("parseContactBody", () => {
     expect(
       parseContactBody({ name: "", email: "a@b.c", message: "x" }).ok,
     ).toBe(false);
-    expect(
-      parseContactBody({ name: "Ada", email: "not-an-email", message: "x" }),
-    ).toEqual({ ok: false, error: "invalid_email" });
+
+    const badEmail = parseContactBody({
+      name: "Ada",
+      email: "not-an-email",
+      message: "x",
+    });
+    expect(badEmail.ok).toBe(false);
+    if (badEmail.ok) return;
+    expect(badEmail.error).toBe("invalid_email");
+    expect(badEmail.fieldErrors?.email).toBe("invalid_email");
   });
 });

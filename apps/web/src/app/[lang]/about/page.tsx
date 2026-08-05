@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, site } from "@/lib/site";
+import { buildPageMetadata } from "@/lib/seo";
 import { getDictionary } from "../dictionaries";
 
 export async function generateMetadata({
@@ -9,7 +10,12 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  return { title: dict.nav.about };
+  return buildPageMetadata({
+    lang,
+    path: "/about",
+    title: dict.meta.pages.about.title,
+    description: dict.meta.pages.about.description,
+  });
 }
 
 export default async function AboutPage({

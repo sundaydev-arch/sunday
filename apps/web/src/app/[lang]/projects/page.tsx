@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjectList } from "@/components/project-list";
+import { buildPageMetadata } from "@/lib/seo";
 import { isLocale } from "@/lib/site";
 import { getDictionary, getProjectsFromDict } from "../dictionaries";
 
@@ -10,7 +11,12 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  return { title: dict.nav.projects };
+  return buildPageMetadata({
+    lang,
+    path: "/projects",
+    title: dict.meta.pages.projects.title,
+    description: dict.meta.pages.projects.description,
+  });
 }
 
 export default async function ProjectsPage({
