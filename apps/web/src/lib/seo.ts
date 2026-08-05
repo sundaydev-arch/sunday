@@ -114,7 +114,7 @@ export function buildSiteJsonLd(lang: Locale, description: string) {
       "@type": "WebSite",
       "@id": websiteId,
       name: site.name,
-      url: site.url,
+      url: home,
       description,
       inLanguage: locales,
       publisher: { "@id": personId },

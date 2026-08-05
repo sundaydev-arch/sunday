@@ -11,7 +11,8 @@ test.describe("performance smoke", () => {
 
     const paint = await page.evaluate(() => {
       const nav = performance.getEntriesByType("navigation")[0] as
-        PerformanceNavigationTiming | undefined;
+        | PerformanceNavigationTiming
+        | undefined;
       return {
         domContentLoaded: nav?.domContentLoadedEventEnd ?? 0,
         transferSize: nav?.transferSize ?? 0,

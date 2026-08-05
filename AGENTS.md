@@ -35,7 +35,13 @@ pnpm analyze
 ```text
 apps/web
 packages/analytics
-packages/eslint-config
 packages/typescript-config
 supabase/                 # schema SQL + RLS docs
+.agents/skills/           # agent skills (source of truth)
+.cursor/skills/           # symlinks → .agents/skills
 ```
+
+## Skills
+
+- SEO / GEO audit: `.agents/skills/seo-audit` (Cursor via `.cursor/skills/seo-audit` symlink).
+- Sunday inventory: `.agents/skills/seo-audit/references/sunday-site.md`

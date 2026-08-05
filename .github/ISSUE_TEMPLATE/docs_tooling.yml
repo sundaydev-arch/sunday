@@ -10,7 +10,7 @@ body:
       options:
         - Documentation
         - CI / workflows
-        - ESLint / Prettier
+        - Oxlint / Oxfmt
         - Tests
         - Agent configs
         - Other
