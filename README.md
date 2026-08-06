@@ -7,13 +7,17 @@ Open-source Next.js portfolio for **Nathan Zhao**. EN/ZH routing, Sentry + PostH
 ```text
 sunday/
   apps/web                 # @sunday/web — Next.js 16
+  apps/mobile              # Flutter iOS / Android
+  apps/desktop             # Tauri macOS / Windows
   packages/analytics       # Sentry / PostHog helpers
+  packages/content         # site meta + en/zh messages
+  packages/contact         # shared Zod contact schema
   packages/typescript-config
   supabase/                # schema + RLS contract
   .agents/skills/          # agent skills (seo-audit, …)
   .cursor/skills/          # symlinks → .agents/skills
   lighthouserc.cjs
-  .github/workflows/       # ci · pr · lighthouse
+  .github/workflows/       # ci · pr · lighthouse · mobile · desktop · desktop-release
 ```
 
 ## Setup checklist

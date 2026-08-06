@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "title": "Nathan Zhao — 全栈工程师",
+    "description": "Nathan Zhao — 全栈工程师，专注多租户 Portal、API 与清晰的产品界面。TypeScript · Next.js · NestJS · FastAPI · Go。",
+    "pages": {
+      "home": {
+        "title": "Nathan Zhao — 全栈工程师",
+        "description": "Nathan Zhao 是全栈工程师，交付多租户 Portal、BFF 与数据 API，技术栈覆盖 TypeScript、Next.js、NestJS、FastAPI 与 Go。"
+      },
+      "about": {
+        "title": "关于",
+        "description": "关于 Nathan Zhao — 关注系统边界与真实界面的全栈工程师，覆盖鉴权、配额、API、缓存与线上治理。"
+      },
+      "projects": {
+        "title": "项目",
+        "description": "Nathan Zhao 精选匿名化案例：多租户 Portal、SaaS 前端平台，以及微前端 CMS 拆分与交付。"
+      },
+      "contact": {
+        "title": "联系",
+        "description": "联系 Nathan Zhao，洽谈全栈岗位与协作。请附上岗位、技术栈与时间线。"
+      }
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "about": "关于",
+    "projects": "项目",
+    "contact": "联系"
+  },
+  "home": {
+    "whoami": "whoami",
+    "title": "全栈工程师 · Founding 级别交付",
+    "blurb": "默认 TypeScript。设计并交付多租户 Portal、BFF 与数据 API，并在生产环境持续治理。",
+    "ctaProjects": "./projects",
+    "ctaContact": "./contact",
+    "selectedLabel": "ls ./selected",
+    "selectedTitle": "精选项目",
+    "selectedCta": "cd projects/"
+  },
+  "about": {
+    "eyebrow": "cat ./about.md",
+    "title": "运行时笔记",
+    "intro": "关注清晰的系统边界与诚实的界面。从产品前端延伸到全栈交付：鉴权、配额、API、缓存与线上治理。",
+    "focusLabel": "focus[]",
+    "focus": "系统 · 全栈 · 产品工程",
+    "stackLabel": "stack[]",
+    "strengthsLabel": "strengths[]",
+    "strengths": [
+      {
+        "label": "架构",
+        "value": "0→1 多租户 Portal / Open API / 权限配额 — 前后端与数据层边界清晰落地"
+      },
+      {
+        "label": "协作",
+        "value": "带领小团队，与产品 / 数据 / 多端对齐排期与质量"
+      },
+      {
+        "label": "技术栈",
+        "value": "Next.js + NestJS BFF + Python / FastAPI + Go / Gin — 鉴权、数据 API、缓存与工程化"
+      },
+      {
+        "label": "闭环",
+        "value": "方案 → 开发 → 上线 → 观测，能定位并闭环线上问题"
+      }
+    ],
+    "skills": {
+      "frontend": "React, TypeScript, Next.js · Tailwind, shadcn/ui, Ant Design / MUI · Vite / Webpack · Qiankun · Monorepo (pnpm / Turborepo / Nx) · Flutter · Tauri",
+      "backend": "Node.js / NestJS (BFF) · Python / FastAPI · Go / Gin · REST · JWT / Cognito · gRPC",
+      "data": "PostgreSQL, MySQL, Redis, S3 · Docker, Kubernetes · CI/CD · Datadog, Sentry"
+    }
+  },
+  "projects": {
+    "eyebrow": "git log --oneline",
+    "title": "精选项目",
+    "blurb": "能力向案例，已匿名处理 — 不含雇主与个人身份信息。"
+  },
+  "contact": {
+    "eyebrow": "open ./inbox",
+    "title": "联系我",
+    "blurb": "发一段 brief 即可——岗位、技术栈、时间线。若更适合当面聊，也可在下方预约时段。",
+    "github": "github",
+    "website": "个人网站",
+    "schedule": "预约",
+    "calEyebrow": "./cal book",
+    "calTitle": "预约通话",
+    "calBlurb": "选个合适的时间——岗位沟通、协作，或快速对齐技术栈。",
+    "formHint": "POST /api/contact",
+    "fields": {
+      "name": "--name",
+      "email": "--email",
+      "message": "--message",
+      "namePlaceholder": "alias",
+      "emailPlaceholder": "you@domain.dev",
+      "messagePlaceholder": "payload...",
+      "submit": "submit --force",
+      "sending": "sending...",
+      "success": "已发送 — 收到后我会尽快回复。",
+      "error": "发送失败，请重试。",
+      "network": "网络错误，请重试。"
+    },
+    "validation": {
+      "missing_fields": "请填写必填项。",
+      "invalid_email": "请输入有效邮箱。",
+      "invalid_body": "请求无效。",
+      "name_too_long": "姓名过长。",
+      "message_too_long": "消息过长。",
+      "captcha_required": "请完成人机验证。",
+      "captcha_failed": "验证失败，请重试。",
+      "rate_limited": "提交过于频繁，请稍后再试。"
+    }
+  },
+  "footer": {
+    "exit": "exit_code=",
+    "stack": "MIT"
+  },
+  "items": [
+    {
+      "id": "1",
+      "title": "多租户 Portal + Open API",
+      "role": "全栈 / Founding 级别负责",
+      "summary": "从 0→1 搭建机构 Portal：账户 / 权限 / 订阅 / 支付 API、权限驱动前端、统一鉴权与企业配额、桌面端内部工具。",
+      "highlights": [
+        "多条产品线 Portal + Open API 双端交付",
+        "商业写路径与行情读路径拆分，热点 Redis 缓存",
+        "短时任务 Token 支撑远程 GPU 测评；统一鉴权与错误码降低多端联调成本"
+      ],
+      "tags": ["Next.js", "FastAPI", "Gin", "K8s"],
+      "year": "近期",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "SaaS 前端平台",
+      "role": "前端 Owner",
+      "summary": "负责多端 SaaS 架构与交付：NestJS BFF、微前端、组件库 → 配置化、文档流水线、SSR / 私域部署。",
+      "highlights": [
+        "项目初始化从天级降到小时级",
+        "高频页配置化，减少重复开发",
+        "BFF + SSR / 私域方案落地生产"
+      ],
+      "tags": ["Next.js", "NestJS", "Qiankun", "Flutter"],
+      "year": "此前",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "title": "CMS 微前端子系统",
+      "role": "前端开发",
+      "summary": "CMS 迭代与巨石拆分（Qiankun）、组件库与 H5 low-code 交付。",
+      "highlights": ["拆分后应用可独立发布", "配置化提升交付效率"],
+      "tags": ["React", "Qiankun", "Umi"],
+      "year": "此前",
+      "featured": true
+    },
+    {
+      "id": "4",
+      "title": "数据可视化与工程规范",
+      "role": "前端开发",
+      "summary": "数据可视化与店铺多端；CLI / 脚手架、组件库，以及 Class → Hooks + TypeScript 迁移。",
+      "highlights": ["多项目规范与脚手架统一", "降低协作成本"],
+      "tags": ["React", "GraphQL", "Charts"],
+      "year": "更早",
+      "featured": false
+    }
+  ]
+}

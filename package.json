@@ -14,7 +14,8 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
-    "test:lighthouse": "lhci autorun --config=./lighthouserc.cjs"
+    "test:lighthouse": "lhci autorun --config=./lighthouserc.cjs",
+    "desktop:bump": "node scripts/bump-desktop-version.mjs"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",

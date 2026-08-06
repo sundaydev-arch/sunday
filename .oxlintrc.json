@@ -38,6 +38,8 @@
     "**/.turbo/**",
     "**/.lighthouseci/**",
     "**/next-env.d.ts",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "apps/mobile/**",
+    "apps/desktop/src-tauri/**"
   ]
 }

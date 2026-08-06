@@ -22,7 +22,7 @@ Do **not** recommend putting employers, school, phone, or private email on publi
 - `apps/web/src/components/json-ld.tsx` — Person / WebSite JSON-LD
 - `apps/web/public/llms.txt` + `public/.well-known/llms.txt`
 - `apps/web/src/app/opengraph-image.tsx` · `manifest.ts`
-- Per-route metadata in `apps/web/src/app/[locale]/**/page.tsx` from `messages/{en,zh}.json` → `meta.pages.*`
+- Per-route metadata in `apps/web/src/app/[locale]/**/page.tsx` from `@sunday/content` messages (`packages/content/src/messages/{en,zh}.json`) → `meta.pages.*`
 - Lighthouse CI: root `lighthouserc.cjs` / `pnpm test:lighthouse`
 
 ## Key routes
@@ -32,7 +32,7 @@ Do **not** recommend putting employers, school, phone, or private email on publi
 ## Audit focus for this site
 
 1. Locale + canonical + `hreflang` consistency
-2. Copy quality in `messages/*.json` (not keyword stuffing)
+2. Copy quality in `packages/content/src/messages/*.json` (not keyword stuffing)
 3. JSON-LD accuracy vs on-page brand (Nathan Zhao)
 4. Contact / Cal embed: indexable text vs iframe-only content
 5. GEO: `llms.txt` freshness vs live meta

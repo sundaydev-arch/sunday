@@ -1,0 +1,22 @@
+{
+  "name": "@sunday/content",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./site": "./src/site.ts",
+    "./dictionary": "./src/dictionary.ts",
+    "./messages/en.json": "./src/messages/en.json",
+    "./messages/zh.json": "./src/messages/zh.json"
+  },
+  "devDependencies": {
+    "@sunday/typescript-config": "workspace:*",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

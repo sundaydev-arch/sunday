@@ -1,0 +1,155 @@
+name: Desktop Release
+
+# Builds installers and uploads a draft GitHub Release.
+#
+# Triggers:
+#   1. Preferred: Actions → "Desktop Cut Release" (bump + tag + calls this workflow)
+#   2. Manual tag from a developer machine:
+#        git tag desktop-v0.1.1 && git push origin desktop-v0.1.1
+#
+# Optional signing / client env secrets — see apps/desktop/README.md
+
+on:
+  push:
+    tags:
+      - "desktop-v*"
+  workflow_call:
+    inputs:
+      version:
+        description: Semver without prefix (e.g. 0.1.1)
+        required: true
+        type: string
+      tag:
+        description: Git tag (e.g. desktop-v0.1.1)
+        required: true
+        type: string
+
+concurrency:
+  group: desktop-release-${{ inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  VITE_API_BASE_URL: https://sundaydev.vercel.app
+
+jobs:
+  publish:
+    name: Build · Upload (${{ matrix.label }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            label: macOS arm64
+            args: --target aarch64-apple-darwin
+            rust_targets: aarch64-apple-darwin
+          - platform: macos-latest
+            label: macOS x64
+            args: --target x86_64-apple-darwin
+            rust_targets: x86_64-apple-darwin
+          - platform: windows-latest
+            label: Windows
+            args: ""
+            rust_targets: ""
+
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 60
+
+    steps:
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+            TAG="${{ inputs.tag }}"
+          else
+            VERSION="${GITHUB_REF_NAME#desktop-v}"
+            TAG="$GITHUB_REF_NAME"
+          fi
+          if [ -z "$VERSION" ] || [ -z "$TAG" ]; then
+            echo "Could not resolve version/tag" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ver.outputs.tag }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Import Apple signing certificate
+        if: runner.os == 'macOS' && secrets.APPLE_CERTIFICATE != ''
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}
+        run: |
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$CERT_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+
+      - name: Build and upload release assets
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
+          VITE_TURNSTILE_SITE_KEY: ${{ secrets.DESKTOP_TURNSTILE_SITE_KEY }}
+          VITE_SENTRY_DSN: ${{ secrets.DESKTOP_SENTRY_DSN }}
+          VITE_POSTHOG_KEY: ${{ secrets.DESKTOP_POSTHOG_KEY }}
+          VITE_POSTHOG_HOST: ${{ secrets.DESKTOP_POSTHOG_HOST }}
+          VITE_CAL_LINK: ${{ secrets.DESKTOP_CAL_LINK }}
+          VITE_SENTRY_ENVIRONMENT: production
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: apps/desktop
+          tauriScript: pnpm tauri
+          version: ${{ steps.ver.outputs.version }}
+          tagName: ${{ steps.ver.outputs.tag }}
+          releaseName: Sunday desktop v${{ steps.ver.outputs.version }}
+          releaseBody: |
+            Desktop installers for **Nathan Zhao** portfolio (`@sunday/desktop`).
+
+            ## Install
+            - **macOS**: download the `.dmg` / `.app` for your chip (arm64 or x64)
+            - **Windows**: run the `.exe` (NSIS) or `.msi`
+
+            Unsigned builds work for local/testing; Gatekeeper / SmartScreen may warn without signing secrets.
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
