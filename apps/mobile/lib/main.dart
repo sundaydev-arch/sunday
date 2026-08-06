@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:sentry_flutter/sentry_flutter.dart";
@@ -11,20 +13,30 @@ Future<void> startApp(AppFlavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   FlavorConfig.flavor = flavor;
 
-  Future<void> bootstrap() async {
-    await bootstrapApp();
-    runApp(const ProviderScope(child: SundayApp()));
-  }
+  // Paint the Flutter splash ASAP. Heavy DI / analytics warm up underneath
+  // so users don't sit on a blank native launch screen.
+  runApp(const ProviderScope(child: SundayApp()));
+  unawaited(_warmServices());
+}
 
-  if (AppConfig.hasSentry) {
-    await SentryFlutter.init((options) {
-      options.dsn = AppConfig.sentryDsn;
-      options.tracesSampleRate = 0.1;
-      options.environment = FlavorConfig.label;
-      options.dist = FlavorConfig.label;
-    }, appRunner: bootstrap);
-  } else {
-    await bootstrap();
+Future<void> _warmServices() async {
+  try {
+    if (AppConfig.hasSentry) {
+      await SentryFlutter.init((options) {
+        options.dsn = AppConfig.sentryDsn;
+        options.tracesSampleRate = 0.1;
+        options.environment = FlavorConfig.label;
+        options.dist = FlavorConfig.label;
+      });
+    }
+    await bootstrapApp();
+  } catch (error, stackTrace) {
+    FlutterError.reportError(
+      FlutterErrorDetails(exception: error, stack: stackTrace),
+    );
+    if (!bootstrapCompleter.isCompleted) {
+      bootstrapCompleter.complete();
+    }
   }
 }
 

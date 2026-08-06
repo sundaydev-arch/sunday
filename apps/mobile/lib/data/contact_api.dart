@@ -28,7 +28,13 @@ class ContactSubmitErr extends ContactSubmitResult {
   final ContactValidationError? code;
 }
 
-final contactApiProvider = Provider<ContactApi>((ref) => getIt<ContactApi>());
+final contactApiProvider = Provider<ContactApi>((ref) {
+  if (!getIt.isRegistered<ContactApi>()) {
+    // Fallback instance if read before bootstrap (should be rare).
+    return ContactApi();
+  }
+  return getIt<ContactApi>();
+});
 
 class ContactApi {
   ContactApi({Dio? dio, String? baseUrl, String? proxyUrl})
