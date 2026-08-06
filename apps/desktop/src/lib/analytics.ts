@@ -11,6 +11,7 @@ export function initAnalytics() {
     Sentry.init({
       dsn: config.sentryDsn,
       environment: config.sentryEnvironment,
+      release: `sunday-desktop@${__APP_VERSION__}`,
       tracesSampleRate: 0.1,
     });
     sentryReady = true;

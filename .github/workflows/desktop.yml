@@ -62,6 +62,10 @@ jobs:
         with:
           components: rustfmt, clippy
 
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+
       - name: Install Linux Tauri dependencies
         run: |
           sudo apt-get update
@@ -101,11 +105,15 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
 
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+
       - run: pnpm install --frozen-lockfile
 
       - name: Tauri build (debug, unsigned)
         working-directory: apps/desktop
-        run: pnpm tauri build --debug --bundles app
+        run: pnpm tauri build --debug --bundles app --config '{"bundle":{"createUpdaterArtifacts":false}}'
         env:
           VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
           CI: true
@@ -130,11 +138,15 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
 
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri -> target
+
       - run: pnpm install --frozen-lockfile
 
       - name: Tauri build (debug)
         working-directory: apps/desktop
-        run: pnpm tauri build --debug --bundles nsis
+        run: pnpm tauri build --debug --bundles nsis --config "{\"bundle\":{\"createUpdaterArtifacts\":false}}"
         env:
           VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
           CI: true

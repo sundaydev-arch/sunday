@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -40,6 +41,10 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       // ignore
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const value = useMemo(
     () => ({

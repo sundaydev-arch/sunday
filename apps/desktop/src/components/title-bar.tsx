@@ -1,6 +1,7 @@
 import { useRouterState } from "@tanstack/react-router";
 import { getCalUrl } from "@/lib/cal";
 import { openExternal } from "@/lib/open-url";
+import { usesOverlayTitleBar } from "@/lib/platform";
 import { site } from "@/lib/site";
 
 const actions = [
@@ -24,10 +25,18 @@ const actions = [
   },
 ] as const;
 
-/** Overlay title bar — drag region + quick external actions (desktop only). */
+/**
+ * Overlay title bar — macOS only (traffic lights + drag region).
+ * Windows / Linux keep native decorations; Help menu covers external links.
+ */
 export function TitleBar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const pathLabel = pathname === "/" ? "~" : `~${pathname}`;
+  const overlay = usesOverlayTitleBar();
+
+  if (!overlay) {
+    return null;
+  }
 
   return (
     <div
@@ -51,7 +60,7 @@ export function TitleBar() {
             type="button"
             title={action.label}
             aria-label={action.label}
-            className="rounded-md px-2 py-1 font-mono text-[11px] tracking-wide text-(--muted) uppercase transition hover:bg-(--accent-dim) hover:text-(--accent)"
+            className="rounded-md px-2 py-1 font-mono text-[11px] tracking-wide text-(--muted) uppercase transition hover:bg-(--accent-dim) hover:text-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
             onClick={() => void openExternal(action.href())}
           >
             {action.short}

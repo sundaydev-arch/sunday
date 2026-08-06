@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Bump @sunday/desktop version across package.json, tauri.conf.json, Cargo.toml.
+ * Bump @sunday/desktop version across package.json, tauri.conf.json,
+ * Cargo.toml, and Cargo.lock.
  *
  * Usage:
  *   node scripts/bump-desktop-version.mjs patch|minor|major|X.Y.Z
  *
  * Prints the new version to stdout (last line) for CI capture.
  */
+import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +17,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const packagePath = join(root, "apps/desktop/package.json");
 const tauriConfPath = join(root, "apps/desktop/src-tauri/tauri.conf.json");
 const cargoPath = join(root, "apps/desktop/src-tauri/Cargo.toml");
+const cargoLockPath = join(root, "apps/desktop/src-tauri/Cargo.lock");
+const tauriDir = join(root, "apps/desktop/src-tauri");
 
 function parseSemver(version) {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version.trim());
@@ -59,6 +63,24 @@ function bump(version, kind) {
   );
 }
 
+function syncCargoLock(version) {
+  const lock = readFileSync(cargoLockPath, "utf8");
+  const next = lock.replace(
+    /(\[\[package\]\]\nname = "sunday_desktop"\nversion = ")[^"]+(")/,
+    `$1${version}$2`,
+  );
+  if (next === lock) {
+    throw new Error('Could not find sunday_desktop version in Cargo.lock');
+  }
+  writeFileSync(cargoLockPath, next);
+
+  // Refresh lock metadata so cargo agrees with Cargo.toml.
+  execFileSync("cargo", ["metadata", "--format-version", "1", "--no-deps"], {
+    cwd: tauriDir,
+    stdio: "ignore",
+  });
+}
+
 const kind = process.argv[2];
 if (!kind) {
   console.error("Usage: bump-desktop-version.mjs <patch|minor|major|X.Y.Z>");
@@ -83,6 +105,8 @@ writeFileSync(
   cargoPath,
   cargo.replace(/^version\s*=\s*"[^"]+"/m, `version = "${next}"`),
 );
+
+syncCargoLock(next);
 
 console.error(`Bumped desktop → ${next}`);
 console.log(next);

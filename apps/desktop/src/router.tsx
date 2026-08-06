@@ -11,6 +11,7 @@ import { PillNav } from "@/components/pill-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { TitleBar } from "@/components/title-bar";
 import { capturePageView } from "@/lib/analytics";
+import { startUpdaterBridge } from "@/lib/updater";
 import { AboutPage } from "@/routes/about-page";
 import { ContactPage } from "@/routes/contact-page";
 import { HomePage } from "@/routes/home-page";
@@ -22,6 +23,10 @@ function RootLayout() {
   useEffect(() => {
     capturePageView(pathname);
   }, [pathname]);
+
+  useEffect(() => {
+    startUpdaterBridge();
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col bg-(--background)">

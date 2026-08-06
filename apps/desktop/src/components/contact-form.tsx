@@ -120,7 +120,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
   }
 
   const fieldClass =
-    "w-full min-w-0 border border-(--line) bg-(--field) px-4 py-3 font-mono text-sm text-(--ink) outline-none transition placeholder:text-(--muted)/60 focus:border-(--accent)";
+    "w-full min-w-0 border border-(--line) bg-(--field) px-4 py-3 font-mono text-sm text-(--ink) outline-none transition placeholder:text-(--muted)/60 focus:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)";
 
   return (
     <form
@@ -183,7 +183,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex items-center justify-center rounded-full bg-(--accent) px-6 py-3 text-sm font-medium text-(--accent-ink) transition hover:bg-(--accent-deep) hover:text-white disabled:opacity-60"
+        className="inline-flex items-center justify-center rounded-full bg-(--accent) px-6 py-3 text-sm font-medium text-(--accent-ink) transition hover:bg-(--accent-deep) hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:opacity-60"
       >
         {pending ? labels.sending : labels.submit}
       </button>

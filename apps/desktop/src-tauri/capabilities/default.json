@@ -5,12 +5,19 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
+    "core:app:allow-version",
+    "core:event:allow-listen",
+    "core:event:allow-emit",
     "opener:default",
+    "updater:default",
+    "process:default",
     {
       "identifier": "opener:allow-open-url",
       "allow": [
-        { "url": "https://*" },
-        { "url": "http://*" }
+        { "url": "https://github.com/sundaydev-arch*" },
+        { "url": "https://sundaydev.vercel.app*" },
+        { "url": "https://cal.com/*" },
+        { "url": "https://*.cal.com/*" }
       ]
     }
   ]
