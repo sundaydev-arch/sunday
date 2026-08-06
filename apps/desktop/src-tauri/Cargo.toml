@@ -1,6 +1,6 @@
 [package]
 name = "sunday_desktop"
-version = "0.1.3"
+version = "0.1.4"
 description = "Nathan Zhao portfolio desktop app"
 authors = ["Nathan Zhao"]
 edition = "2021"
