@@ -14,7 +14,7 @@ export function PillNav() {
   ] as const;
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-6">
+    <header className="pointer-events-none fixed inset-x-0 top-11 z-50 px-3 pt-3 sm:px-4 sm:pt-5">
       <nav
         aria-label="Primary"
         className="animate-nav-in pointer-events-auto mx-auto flex w-full max-w-5xl flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3"
