@@ -52,7 +52,8 @@ jobs:
           git add \
             apps/desktop/package.json \
             apps/desktop/src-tauri/tauri.conf.json \
-            apps/desktop/src-tauri/Cargo.toml
+            apps/desktop/src-tauri/Cargo.toml \
+            apps/desktop/src-tauri/Cargo.lock
           git commit -m "chore(desktop): release v${{ steps.bump.outputs.version }}"
           git tag "${{ steps.bump.outputs.tag }}"
           git push origin HEAD

@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Nathan Zhao",
         "width": 1280,
         "height": 860,
@@ -26,17 +27,13 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://app.cal.com https://*.cal.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://sundaydev.vercel.app https://*.supabase.co https://us.i.posthog.com https://*.i.posthog.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com https://api.cal.com; frame-src https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com; worker-src 'self' blob:"
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com; style-src 'self' 'unsafe-inline' https://app.cal.com https://*.cal.com; font-src 'self' data:; img-src 'self' data: https: blob:; connect-src 'self' https://sundaydev.vercel.app https://*.supabase.co https://us.i.posthog.com https://*.i.posthog.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com https://api.cal.com https://github.com https://objects.githubusercontent.com https://release-assets.githubusercontent.com; frame-src https://challenges.cloudflare.com https://app.cal.com https://cal.com https://*.cal.com; worker-src 'self' blob:"
     }
   },
   "bundle": {
     "active": true,
-    "targets": [
-      "dmg",
-      "app",
-      "msi",
-      "nsis"
-    ],
+    "createUpdaterArtifacts": true,
+    "targets": ["dmg", "app", "nsis"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -50,6 +47,17 @@
     "windows": {
       "nsis": {
         "installMode": "currentUser"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDkwRUFBNjQ5RjM4M0QyMEMKUldRTTBvUHpTYWJxa0c5RXY0Ly9lVDRPZFBqRDJQQXN3aDhxc0ZNS0ZXdVNXQ1VmRWlSZWpvOTUK",
+      "endpoints": [
+        "https://github.com/sundaydev-arch/sunday/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
       }
     }
   }

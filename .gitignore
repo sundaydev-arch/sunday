@@ -67,3 +67,9 @@ apps/mobile/android/local.properties
 # Tauri
 apps/desktop/src-tauri/target/
 apps/desktop/dist/
+
+# Local secrets / machine-only artifacts (updater private key, etc.)
+.local/
+
+# Local Flutter dart-defines (proxy / site keys)
+apps/mobile/dart_defines.dev.json

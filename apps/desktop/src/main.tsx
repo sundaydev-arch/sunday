@@ -4,8 +4,16 @@ import { App } from "@/App";
 import { initAnalytics } from "@/lib/analytics";
 import "@/styles/globals.css";
 
-// Native WebView menu (Back / Reload / Inspect Element) feels browser-y.
+// Block WebView chrome menus; keep native cut/copy/paste on form fields.
 document.addEventListener("contextmenu", (event) => {
+  const target = event.target;
+  if (
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLTextAreaElement ||
+    (target instanceof HTMLElement && target.isContentEditable)
+  ) {
+    return;
+  }
   event.preventDefault();
 });
 
