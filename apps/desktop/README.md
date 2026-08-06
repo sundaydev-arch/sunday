@@ -4,16 +4,16 @@ Portfolio desktop app with content and feature parity against `@sunday/web`.
 
 ## Stack
 
-| Layer | Choice |
-| --- | --- |
-| Shell | Tauri 2 |
-| UI | React 19 · Vite · TypeScript · Tailwind CSS v4 |
-| Routing | TanStack Router |
-| Networking | `fetch` → `POST {VITE_API_BASE_URL}/api/contact` |
-| Captcha | Cloudflare Turnstile (optional via `VITE_TURNSTILE_SITE_KEY`) |
-| Analytics | `posthog-js` + `@sentry/react` (same event names as web/mobile) |
-| Fonts | Google Fonts — Space Grotesk + IBM Plex Mono |
-| i18n | EN / ZH message JSON (same copy as web) |
+| Layer      | Choice                                                          |
+| ---------- | --------------------------------------------------------------- |
+| Shell      | Tauri 2                                                         |
+| UI         | React 19 · Vite · TypeScript · Tailwind CSS v4                  |
+| Routing    | TanStack Router                                                 |
+| Networking | `fetch` → `POST {VITE_API_BASE_URL}/api/contact`                |
+| Captcha    | Cloudflare Turnstile (optional via `VITE_TURNSTILE_SITE_KEY`)   |
+| Analytics  | `posthog-js` + `@sentry/react` (same event names as web/mobile) |
+| Fonts      | Google Fonts — Space Grotesk + IBM Plex Mono                    |
+| i18n       | EN / ZH message JSON (same copy as web)                         |
 
 ## Screens
 
@@ -41,13 +41,13 @@ pnpm --filter @sunday/desktop tauri:dev
 
 See `.env.example`. Empty optional keys disable those integrations.
 
-| Variable | Default | Notes |
-| --- | --- | --- |
-| `VITE_API_BASE_URL` | `https://sundaydev.vercel.app` | Same contact API as web |
-| `VITE_TURNSTILE_SITE_KEY` | empty | Widget hidden when empty |
-| `VITE_SENTRY_DSN` | empty | No-op when empty |
-| `VITE_POSTHOG_KEY` | empty | No-op when empty |
-| `VITE_CAL_LINK` | `https://cal.com/nathan-zhao` | Cal embed + schedule links |
+| Variable                  | Default                        | Notes                      |
+| ------------------------- | ------------------------------ | -------------------------- |
+| `VITE_API_BASE_URL`       | `https://sundaydev.vercel.app` | Same contact API as web    |
+| `VITE_TURNSTILE_SITE_KEY` | empty                          | Widget hidden when empty   |
+| `VITE_SENTRY_DSN`         | empty                          | No-op when empty           |
+| `VITE_POSTHOG_KEY`        | empty                          | No-op when empty           |
+| `VITE_CAL_LINK`           | `https://cal.com/nathan-zhao`  | Cal embed + schedule links |
 
 ## Quality gates
 
@@ -86,14 +86,14 @@ Workflows: [`desktop-cut-release.yml`](../../.github/workflows/desktop-cut-relea
 
 ### Optional secrets (signing / prod env)
 
-| Secret | Purpose |
-| --- | --- |
-| `APPLE_CERTIFICATE` | Base64 `.p12` for macOS codesign |
-| `APPLE_CERTIFICATE_PASSWORD` | P12 password |
-| `APPLE_SIGNING_IDENTITY` | e.g. `Developer ID Application: …` |
-| `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID` | Notarization (app-specific password) |
-| `TAURI_SIGNING_PRIVATE_KEY` / `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Optional updater signatures |
-| `DESKTOP_TURNSTILE_SITE_KEY` / `DESKTOP_SENTRY_DSN` / `DESKTOP_POSTHOG_KEY` / `DESKTOP_POSTHOG_HOST` / `DESKTOP_CAL_LINK` | Baked into release builds |
+| Secret                                                                                                                    | Purpose                              |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `APPLE_CERTIFICATE`                                                                                                       | Base64 `.p12` for macOS codesign     |
+| `APPLE_CERTIFICATE_PASSWORD`                                                                                              | P12 password                         |
+| `APPLE_SIGNING_IDENTITY`                                                                                                  | e.g. `Developer ID Application: …`   |
+| `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID`                                                                           | Notarization (app-specific password) |
+| `TAURI_SIGNING_PRIVATE_KEY` / `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`                                                        | Optional updater signatures          |
+| `DESKTOP_TURNSTILE_SITE_KEY` / `DESKTOP_SENTRY_DSN` / `DESKTOP_POSTHOG_KEY` / `DESKTOP_POSTHOG_HOST` / `DESKTOP_CAL_LINK` | Baked into release builds            |
 
 Without Apple secrets, CI still uploads **unsigned** installers (fine for testing; Gatekeeper may warn). Windows Authenticode can be added later via `tauri.conf` certificate settings.
 

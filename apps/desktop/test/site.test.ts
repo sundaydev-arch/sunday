@@ -24,8 +24,6 @@ describe("dictionary", () => {
     expect(en.nav.home).toBeTruthy();
     expect(zh.nav.home).toBeTruthy();
     expect(getProjectsFromDict(en).length).toBeGreaterThan(0);
-    expect(getProjectsFromDict(zh).length).toBe(
-      getProjectsFromDict(en).length,
-    );
+    expect(getProjectsFromDict(zh).length).toBe(getProjectsFromDict(en).length);
   });
 });

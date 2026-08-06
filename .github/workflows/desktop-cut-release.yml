@@ -1,6 +1,6 @@
 name: Desktop Cut Release
 
-# One-click: bump version → commit → tag → build draft GitHub Release.
+# One-click: bump → commit → tag → trigger Desktop Release (workflow_dispatch).
 # Actions → Desktop Cut Release → patch / minor / major → Run workflow
 
 on:
@@ -22,15 +22,13 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   cut:
-    name: Bump · Commit · Tag
+    name: Bump · Commit · Tag · Dispatch
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      version: ${{ steps.bump.outputs.version }}
-      tag: ${{ steps.bump.outputs.tag }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,12 +58,11 @@ jobs:
           git push origin HEAD
           git push origin "${{ steps.bump.outputs.tag }}"
 
-  # GITHUB_TOKEN tag pushes do not trigger on.push workflows — call release directly.
-  publish:
-    name: Publish
-    needs: cut
-    uses: ./.github/workflows/desktop-release.yml
-    with:
-      version: ${{ needs.cut.outputs.version }}
-      tag: ${{ needs.cut.outputs.tag }}
-    secrets: inherit
+      # GITHUB_TOKEN tag pushes do not trigger other workflows — dispatch explicitly.
+      - name: Dispatch Desktop Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Desktop Release" \
+            --ref "${{ steps.bump.outputs.tag }}" \
+            -f version="${{ steps.bump.outputs.version }}"
