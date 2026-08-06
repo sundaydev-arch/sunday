@@ -2,6 +2,10 @@ name: Desktop Release
 
 # Tag push → build installers → draft GitHub Release.
 # Prefer: Actions → Desktop Cut Release (bumps + tags + dispatches this workflow).
+#
+# Repo setting required (otherwise create-release fails with
+# "Resource not accessible by integration"):
+#   Settings → Actions → General → Workflow permissions → Read and write
 
 on:
   push:
@@ -25,8 +29,82 @@ env:
   VITE_API_BASE_URL: https://sundaydev.vercel.app
 
 jobs:
+  prepare:
+    name: Prepare draft release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      tag: ${{ steps.ver.outputs.tag }}
+      release_id: ${{ steps.release.outputs.id }}
+    steps:
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+            TAG="desktop-v${VERSION}"
+          else
+            TAG="$GITHUB_REF_NAME"
+            VERSION="${TAG#desktop-v}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create or reuse draft release
+        id: release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = '${{ steps.ver.outputs.tag }}';
+            const version = '${{ steps.ver.outputs.version }}';
+            const name = `Sunday desktop v${version}`;
+            const body = [
+              'Desktop installers for **Nathan Zhao** portfolio (`@sunday/desktop`).',
+              '',
+              '## Install',
+              '- **macOS**: download the `.dmg` / `.app` for your chip (arm64 or x64)',
+              '- **Windows**: run the `.exe` (NSIS) or `.msi`',
+              '',
+              'Unsigned builds work for local/testing; Gatekeeper / SmartScreen may warn without signing secrets.',
+            ].join('\n');
+
+            let release;
+            try {
+              release = (await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag,
+              })).data;
+              core.info(`Reusing existing release ${release.id} for ${tag}`);
+            } catch (err) {
+              if (err.status !== 404) throw err;
+              try {
+                release = (await github.rest.repos.createRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_name: tag,
+                  name,
+                  body,
+                  draft: true,
+                  prerelease: false,
+                })).data;
+                core.info(`Created draft release ${release.id} for ${tag}`);
+              } catch (createErr) {
+                core.error(
+                  'Failed to create GitHub Release. Enable write access: ' +
+                    'Settings → Actions → General → Workflow permissions → ' +
+                    '"Read and write permissions", then re-run.',
+                );
+                throw createErr;
+              }
+            }
+            core.setOutput('id', String(release.id));
+
   publish:
     name: Build · Upload (${{ matrix.label }})
+    needs: prepare
     strategy:
       fail-fast: false
       matrix:
@@ -46,25 +124,13 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 60
+    permissions:
+      contents: write
 
     steps:
-      - name: Resolve version
-        id: ver
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ inputs.version }}"
-            TAG="desktop-v${VERSION}"
-          else
-            TAG="$GITHUB_REF_NAME"
-            VERSION="${TAG#desktop-v}"
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-
       - uses: actions/checkout@v4
         with:
-          ref: ${{ steps.ver.outputs.tag }}
+          ref: ${{ needs.prepare.outputs.tag }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -76,10 +142,8 @@ jobs:
           cache: pnpm
 
       - uses: dtolnay/rust-toolchain@stable
-
-      - name: Add Rust target
-        if: matrix.rust_target != 'none'
-        run: rustup target add ${{ matrix.rust_target }}
+        with:
+          targets: ${{ matrix.rust_target != 'none' && matrix.rust_target || '' }}
 
       - uses: swatinem/rust-cache@v2
         with:
@@ -88,26 +152,40 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Import Apple signing certificate
-        if: runner.os == 'macOS'
+      # Empty APPLE_* / TAURI_SIGNING_* secrets become "" in Actions and make
+      # tauri-bundler attempt codesign/import, which fails. Only export when set.
+      - name: Export macOS signing secrets
+        if: runner.os == 'macOS' && secrets.APPLE_CERTIFICATE != ''
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ github.run_id }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          if [ -z "$APPLE_CERTIFICATE" ]; then
-            echo "No APPLE_CERTIFICATE secret; skipping codesign import."
-            exit 0
-          fi
-          CERT_PATH="$RUNNER_TEMP/certificate.p12"
-          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
-          echo "$APPLE_CERTIFICATE" | base64 --decode > "$CERT_PATH"
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$CERT_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychains -d user -s "$KEYCHAIN_PATH"
+          {
+            echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
+            echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
+            echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
+            echo "APPLE_ID=$APPLE_ID"
+            echo "APPLE_PASSWORD=$APPLE_PASSWORD"
+            echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"
+          } >> "$GITHUB_ENV"
+
+      - name: Export updater signing key
+        if: secrets.TAURI_SIGNING_PRIVATE_KEY != ''
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          {
+            echo "TAURI_SIGNING_PRIVATE_KEY<<EOF"
+            echo "$TAURI_SIGNING_PRIVATE_KEY"
+            echo "EOF"
+            echo "TAURI_SIGNING_PRIVATE_KEY_PASSWORD=$TAURI_SIGNING_PRIVATE_KEY_PASSWORD"
+          } >> "$GITHUB_ENV"
+        shell: bash
 
       - name: Build and upload release assets
         uses: tauri-apps/tauri-action@v1
@@ -120,28 +198,8 @@ jobs:
           VITE_POSTHOG_HOST: ${{ secrets.DESKTOP_POSTHOG_HOST }}
           VITE_CAL_LINK: ${{ secrets.DESKTOP_CAL_LINK }}
           VITE_SENTRY_ENVIRONMENT: production
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           projectPath: apps/desktop
           tauriScript: pnpm tauri
-          version: ${{ steps.ver.outputs.version }}
-          tagName: ${{ steps.ver.outputs.tag }}
-          releaseName: Sunday desktop v${{ steps.ver.outputs.version }}
-          releaseBody: |
-            Desktop installers for **Nathan Zhao** portfolio (`@sunday/desktop`).
-
-            ## Install
-            - **macOS**: download the `.dmg` / `.app` for your chip (arm64 or x64)
-            - **Windows**: run the `.exe` (NSIS) or `.msi`
-
-            Unsigned builds work for local/testing; Gatekeeper / SmartScreen may warn without signing secrets.
-          releaseDraft: true
-          prerelease: false
+          releaseId: ${{ needs.prepare.outputs.release_id }}
           args: ${{ matrix.tauri_args }}

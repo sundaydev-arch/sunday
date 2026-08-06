@@ -84,6 +84,10 @@ git push origin desktop-v0.1.1
 
 Workflows: [`desktop-cut-release.yml`](../../.github/workflows/desktop-cut-release.yml) · [`desktop-release.yml`](../../.github/workflows/desktop-release.yml)
 
+### Required: Actions write permission
+
+`tauri-action` creates/uploads a GitHub Release with `GITHUB_TOKEN`. If the run fails with **Resource not accessible by integration**, open **Settings → Actions → General → Workflow permissions**, choose **Read and write permissions**, save, then re-run.
+
 ### Optional secrets (signing / prod env)
 
 | Secret                                                                                                                    | Purpose                              |
