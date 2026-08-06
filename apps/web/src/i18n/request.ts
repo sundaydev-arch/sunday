@@ -1,5 +1,6 @@
 import { getRequestConfig } from "next-intl/server";
 import { hasLocale } from "next-intl";
+import { getDictionary, isLocale, type Locale } from "@sunday/content";
 import { routing } from "./routing";
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -8,8 +9,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
+  const messages = isLocale(locale)
+    ? getDictionary(locale as Locale)
+    : getDictionary(routing.defaultLocale as Locale);
+
   return {
     locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
+    messages,
   };
 });

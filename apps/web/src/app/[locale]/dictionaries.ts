@@ -1,28 +1,16 @@
 import { notFound } from "next/navigation";
-import { isLocale, type Locale } from "@/lib/site";
-import type { Project } from "@/lib/site";
+import {
+  getDictionary as loadDictionary,
+  getProjectsFromDict,
+  isLocale,
+  type Dictionary,
+  type Locale,
+} from "@sunday/content";
 
-const dictionaries = {
-  en: () => import("../../messages/en.json").then((m) => m.default),
-  zh: () => import("../../messages/zh.json").then((m) => m.default),
-};
-
-export type Dictionary = Awaited<ReturnType<(typeof dictionaries)["en"]>>;
+export type { Dictionary };
+export { getProjectsFromDict };
 
 export async function getDictionary(lang: string): Promise<Dictionary> {
   if (!isLocale(lang)) notFound();
-  return dictionaries[lang as Locale]();
-}
-
-export function getProjectsFromDict(dict: Dictionary): Project[] {
-  return dict.items.map((item) => ({
-    id: item.id,
-    title: item.title,
-    role: item.role,
-    summary: item.summary,
-    highlights: item.highlights,
-    tags: item.tags,
-    year: item.year,
-    featured: item.featured,
-  }));
+  return loadDictionary(lang as Locale);
 }

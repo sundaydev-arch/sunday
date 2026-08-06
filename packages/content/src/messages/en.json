@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "title": "Nathan Zhao — Fullstack Engineer",
+    "description": "Nathan Zhao — fullstack engineer building multi-tenant portals, APIs, and sharp product interfaces. TypeScript · Next.js · NestJS · FastAPI · Go.",
+    "pages": {
+      "home": {
+        "title": "Nathan Zhao — Fullstack Engineer",
+        "description": "Nathan Zhao is a fullstack engineer shipping multi-tenant portals, BFF layers, and data APIs with TypeScript, Next.js, NestJS, FastAPI, and Go."
+      },
+      "about": {
+        "title": "About",
+        "description": "About Nathan Zhao — systems-minded fullstack engineer focused on auth, quotas, APIs, caches, and production governance."
+      },
+      "projects": {
+        "title": "Projects",
+        "description": "Selected anonymized case studies by Nathan Zhao: multi-tenant portals, SaaS frontend platforms, and micro-frontend CMS delivery."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Contact Nathan Zhao for fullstack roles and collaborations. Send a brief with role, stack, and timeline."
+      }
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "home": {
+    "whoami": "whoami",
+    "title": "Fullstack Engineer · Founding-level builder",
+    "blurb": "TypeScript by default. I design and ship multi-tenant portals, BFF layers, and data APIs — then keep them honest in production.",
+    "ctaProjects": "./projects",
+    "ctaContact": "./contact",
+    "selectedLabel": "ls ./selected",
+    "selectedTitle": "Selected work",
+    "selectedCta": "cd projects/"
+  },
+  "about": {
+    "eyebrow": "cat ./about.md",
+    "title": "Runtime notes",
+    "intro": "Engineer focused on clean system boundaries and interfaces that don't lie. I grow from product UI into fullstack delivery: auth, quotas, APIs, caches, and online governance.",
+    "focusLabel": "focus[]",
+    "focus": "systems · fullstack · product engineering",
+    "stackLabel": "stack[]",
+    "strengthsLabel": "strengths[]",
+    "strengths": [
+      {
+        "label": "Architecture",
+        "value": "0→1 multi-tenant Portal / Open API / auth & quotas — clear splits across frontend, BFF, and data."
+      },
+      {
+        "label": "Leadership",
+        "value": "Lead small squads; coordinate product, data, and multi-client delivery rhythm & quality."
+      },
+      {
+        "label": "Stack",
+        "value": "Next.js + NestJS BFF + Python / FastAPI + Go / Gin — auth, data APIs, cache, and tooling."
+      },
+      {
+        "label": "Delivery",
+        "value": "Own design → build → ship → observe; close the loop on production issues."
+      }
+    ],
+    "skills": {
+      "frontend": "React, TypeScript, Next.js · Tailwind, shadcn/ui, Ant Design / MUI · Vite / Webpack · Qiankun · Monorepo (pnpm / Turborepo / Nx) · Flutter · Tauri",
+      "backend": "Node.js / NestJS (BFF) · Python / FastAPI · Go / Gin · REST · JWT / Cognito · gRPC",
+      "data": "PostgreSQL, MySQL, Redis, S3 · Docker, Kubernetes · CI/CD · Datadog, Sentry"
+    }
+  },
+  "projects": {
+    "eyebrow": "git log --oneline",
+    "title": "Selected projects",
+    "blurb": "Capability-focused case studies — anonymized, no employer or personal identifiers."
+  },
+  "contact": {
+    "eyebrow": "open ./inbox",
+    "title": "ping me",
+    "blurb": "Drop a brief — role, stack, and timeline. Or book a slot below if a live chat is easier.",
+    "github": "github",
+    "website": "website",
+    "schedule": "schedule",
+    "calEyebrow": "./cal book",
+    "calTitle": "Book a call",
+    "calBlurb": "Pick a time that works — roles, collabs, or a quick stack alignment.",
+    "formHint": "POST /api/contact",
+    "fields": {
+      "name": "--name",
+      "email": "--email",
+      "message": "--message",
+      "namePlaceholder": "alias",
+      "emailPlaceholder": "you@domain.dev",
+      "messagePlaceholder": "payload...",
+      "submit": "submit --force",
+      "sending": "sending...",
+      "success": "Message sent — thanks, I'll get back to you.",
+      "error": "Couldn't send. Please try again.",
+      "network": "Network error. Please try again."
+    },
+    "validation": {
+      "missing_fields": "Please fill in the required fields.",
+      "invalid_email": "Please enter a valid email.",
+      "invalid_body": "Invalid request.",
+      "name_too_long": "Name is too long.",
+      "message_too_long": "Message is too long.",
+      "captcha_required": "Please complete the captcha.",
+      "captcha_failed": "Captcha failed. Please try again.",
+      "rate_limited": "Too many messages. Please wait and try again."
+    }
+  },
+  "footer": {
+    "exit": "exit_code=",
+    "stack": "MIT"
+  },
+  "items": [
+    {
+      "id": "1",
+      "title": "Multi-tenant Portal + Open API",
+      "role": "Fullstack / founding-level ownership",
+      "summary": "0→1 institutional portal with account, permission, subscription, and payment APIs; permission-driven UI; unified auth and enterprise quotas; desktop internal tooling.",
+      "highlights": [
+        "Portal + Open API delivery across multiple product lines",
+        "Split commercial write paths from market-data read paths; hot-path Redis caching",
+        "Short-lived task tokens for remote GPU evaluation workflows; shared auth & error codes across clients"
+      ],
+      "tags": ["Next.js", "FastAPI", "Gin", "K8s"],
+      "year": "Recent",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "SaaS Frontend Platform",
+      "role": "Frontend owner",
+      "summary": "Owned architecture and delivery for a multi-end SaaS surface: NestJS BFF, micro-frontends, component library → configuration, document pipelines, and SSR / private deployment.",
+      "highlights": [
+        "Project bootstrap reduced from days to hours",
+        "High-frequency pages moved to configuration to cut duplicate work",
+        "BFF + SSR / private-deploy path landed in production"
+      ],
+      "tags": ["Next.js", "NestJS", "Qiankun", "Flutter"],
+      "year": "Prior",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "title": "CMS Micro-frontend Split",
+      "role": "Frontend engineer",
+      "summary": "CMS iteration with monolith → Qiankun split, shared component library, and H5 low-code delivery.",
+      "highlights": [
+        "Apps ship independently after the split",
+        "Configuration improved delivery speed"
+      ],
+      "tags": ["React", "Qiankun", "Umi"],
+      "year": "Prior",
+      "featured": true
+    },
+    {
+      "id": "4",
+      "title": "Data Viz & Engineering Standards",
+      "role": "Frontend engineer",
+      "summary": "Data visualization and multi-end storefronts; CLI/scaffolding, component library, and Class → Hooks + TypeScript migration.",
+      "highlights": [
+        "Unified project standards and scaffolding across teams",
+        "Lower collaboration cost through shared tooling"
+      ],
+      "tags": ["React", "GraphQL", "Charts"],
+      "year": "Earlier",
+      "featured": false
+    }
+  ]
+}

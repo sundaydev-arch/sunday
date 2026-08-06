@@ -18,6 +18,8 @@
     "@calcom/embed-react": "^1.5.3",
     "@sentry/nextjs": "^10.69.0",
     "@sunday/analytics": "workspace:*",
+    "@sunday/contact": "workspace:*",
+    "@sunday/content": "workspace:*",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.1",
     "lucide-react": "^1.28.0",
