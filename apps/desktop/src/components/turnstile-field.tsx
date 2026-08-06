@@ -74,7 +74,7 @@ export function TurnstileField({ siteKey, onToken }: Props) {
     };
   }, [siteKey, onToken]);
 
-  return <div ref={hostRef} className="min-h-[65px]" data-testid="turnstile" />;
+  return <div ref={hostRef} className="min-h-16" data-testid="turnstile" />;
 }
 
 export function resetTurnstile() {

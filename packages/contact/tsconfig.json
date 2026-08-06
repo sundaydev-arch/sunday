@@ -1,9 +1,10 @@
 {
-  "extends": "@sunday/typescript-config/base.json",
+  "extends": "../typescript-config/base.json",
   "compilerOptions": {
     "lib": ["esnext"],
     "noEmit": true,
     "rootDir": "src"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

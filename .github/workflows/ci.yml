@@ -1,10 +1,41 @@
-name: CI
+name: Web CI
 
+# Web / shared JS only — mobile & desktop-only changes do not run this.
 on:
   push:
     branches: [main, master]
+    paths:
+      - "apps/web/**"
+      - "packages/analytics/**"
+      - "packages/content/**"
+      - "packages/contact/**"
+      - "packages/typescript-config/**"
+      - "supabase/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".oxlintrc.json"
+      - ".oxfmtrc.json"
+      - "lighthouserc.cjs"
+      - ".github/workflows/ci.yml"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "apps/web/**"
+      - "packages/analytics/**"
+      - "packages/content/**"
+      - "packages/contact/**"
+      - "packages/typescript-config/**"
+      - "supabase/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".oxlintrc.json"
+      - ".oxfmtrc.json"
+      - "lighthouserc.cjs"
+      - ".github/workflows/ci.yml"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}

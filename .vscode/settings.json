@@ -1,0 +1,31 @@
+{
+  "typescript.tsdk": "apps/desktop/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "tailwindCSS.experimental.configFile": {
+    "apps/desktop/src/styles/globals.css": "apps/desktop/**",
+    "apps/web/src/app/globals.css": "apps/web/**"
+  },
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+  "tailwindCSS.lint.invalidApply": "warning",
+  "tailwindCSS.classFunctions": [
+    "cn"
+  ],
+  "tailwindCSS.files.exclude": [
+    "**/node_modules/**",
+    "**/src-tauri/target/**",
+    "**/dist/**",
+    "**/.next/**"
+  ],
+  "cSpell.words": [
+    "calcom",
+    "posthog",
+    "turnstile",
+    "sundaydev",
+    "tauri",
+    "geek",
+    "oxlint",
+    "oxfmt"
+  ],
+  "tailwindCSS.lint.invalidScreen": "ignore",
+  "tailwindCSS.lint.invalidVariant": "ignore"
+}

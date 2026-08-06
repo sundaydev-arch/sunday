@@ -8,3 +8,4 @@ Flutter portfolio for **Nathan Zhao**. Content and contact API parity with `apps
 - Do not expose employers, school, phone, or private email
 - Keep terminal / geek-shell UI (no stock Material form skins that break the look)
 - Quality: `flutter analyze --fatal-infos` · `flutter test` · CI `.github/workflows/mobile.yml`
+- Release / store: `docs/RELEASE.md` · Fastlane · `.github/workflows/mobile-release.yml`

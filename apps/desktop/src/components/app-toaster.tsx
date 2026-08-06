@@ -8,8 +8,8 @@ export function AppToaster() {
       toastOptions={{
         classNames: {
           toast:
-            "font-mono border border-[var(--line)] bg-[var(--panel)] text-[var(--ink)]",
-          description: "text-[var(--muted)]",
+            "font-mono border border-(--line) bg-(--panel) text-(--ink)",
+          description: "text-(--muted)",
         },
       }}
     />

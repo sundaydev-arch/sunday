@@ -5,11 +5,15 @@ on:
     branches: [main, master]
     paths:
       - "apps/mobile/**"
+      - "packages/content/**"
+      - "packages/contact/**"
       - ".github/workflows/mobile.yml"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - "apps/mobile/**"
+      - "packages/content/**"
+      - "packages/contact/**"
       - ".github/workflows/mobile.yml"
 
 concurrency:

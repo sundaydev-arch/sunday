@@ -45,13 +45,13 @@ export function PillNav({ lang, labels }: { lang: Locale; labels: NavLabels }) {
         <div className="flex items-center justify-between gap-3 sm:contents">
           <Link
             href={withLocale(lang)}
-            className="shrink-0 font-mono text-sm font-medium tracking-tight text-[var(--accent)] transition hover:text-[var(--ink)] sm:text-base"
+            className="shrink-0 font-mono text-sm font-medium tracking-tight text-(--accent) transition hover:text-(--ink) sm:text-base"
           >
-            <span className="text-[var(--muted)]">~/</span>
+            <span className="text-(--muted)">~/</span>
             {site.handle}
           </Link>
 
-          <div className="flex shrink-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--nav-track)]/90 px-1.5 py-1 font-mono text-xs backdrop-blur-md sm:order-last">
+          <div className="flex shrink-0 items-center gap-1 rounded-full border border-(--line) bg-(--nav-track)/90 px-1.5 py-1 font-mono text-xs backdrop-blur-md sm:order-last">
             {locales.map((locale) => (
               <Link
                 key={locale}
@@ -59,8 +59,8 @@ export function PillNav({ lang, labels }: { lang: Locale; labels: NavLabels }) {
                 className={[
                   "rounded-full px-2 py-1 uppercase transition",
                   locale === lang
-                    ? "bg-[var(--accent-dim)] text-[var(--accent)]"
-                    : "text-[var(--muted)] hover:text-[var(--ink)]",
+                    ? "bg-(--accent-dim) text-(--accent)"
+                    : "text-(--muted) hover:text-(--ink)",
                 ].join(" ")}
                 hrefLang={locale}
               >
@@ -71,7 +71,7 @@ export function PillNav({ lang, labels }: { lang: Locale; labels: NavLabels }) {
         </div>
 
         <div className="w-full min-w-0 sm:w-auto sm:max-w-none">
-          <div className="nav-scroll flex items-center rounded-full border border-[var(--line)] bg-[var(--nav-track)]/90 p-1 backdrop-blur-md">
+          <div className="nav-scroll flex items-center rounded-full border border-(--line) bg-(--nav-track)/90 p-1 backdrop-blur-md">
             {items.map((item) => {
               const active =
                 item.match === "/" ? rest === "/" : rest.startsWith(item.match);
@@ -83,8 +83,8 @@ export function PillNav({ lang, labels }: { lang: Locale; labels: NavLabels }) {
                   className={[
                     "shrink-0 rounded-full px-3 py-2 text-xs font-medium transition-colors duration-200 sm:px-4 sm:text-sm",
                     active
-                      ? "bg-[var(--accent)] text-[var(--accent-ink)]"
-                      : "text-[var(--muted)] hover:text-[var(--ink)]",
+                      ? "bg-(--accent) text-(--accent-ink)"
+                      : "text-(--muted) hover:text-(--ink)",
                   ].join(" ")}
                 >
                   {item.label}
