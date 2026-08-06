@@ -75,11 +75,11 @@ export function CalEmbed({ calLink }: CalEmbedProps) {
     <div className="cal-embed relative w-full overflow-hidden">
       {!ready ? (
         <div
-          className="flex min-h-[220px] flex-col items-center justify-center gap-3 bg-[var(--panel)]"
+          className="flex min-h-55 flex-col items-center justify-center gap-3 bg-(--panel)"
           aria-busy="true"
         >
-          <Spinner className="size-8 text-[var(--accent)]" />
-          <p className="font-mono text-xs text-[var(--muted)]">loading…</p>
+          <Spinner className="size-8 text-(--accent)" />
+          <p className="font-mono text-xs text-(--muted)">loading…</p>
         </div>
       ) : null}
       <div

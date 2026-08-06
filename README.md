@@ -17,7 +17,7 @@ sunday/
   .agents/skills/          # agent skills (seo-audit, …)
   .cursor/skills/          # symlinks → .agents/skills
   lighthouserc.cjs
-  .github/workflows/       # ci · pr · lighthouse · mobile · desktop · desktop-release
+  .github/workflows/       # web CI · lighthouse · mobile · desktop · releases (path-filtered)
 ```
 
 ## Setup checklist

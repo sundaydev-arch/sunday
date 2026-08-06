@@ -1,0 +1,4 @@
+app_identifier("app.sundaydev.sundayMobile")
+apple_id(ENV["APPLE_ID"]) # optional when using ASC API key
+itc_team_id(ENV["ITC_TEAM_ID"]) # optional
+team_id(ENV["TEAM_ID"]) # optional Developer Portal team

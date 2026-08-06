@@ -133,7 +133,7 @@ export function ContactForm({
   }
 
   const fieldClass =
-    "w-full min-w-0 border border-[var(--line)] bg-[var(--field)] px-4 py-3 font-mono text-sm text-[var(--ink)] outline-none transition placeholder:text-[var(--muted)]/60 focus:border-[var(--accent)]";
+    "w-full min-w-0 border border-(--line) bg-(--field) px-4 py-3 font-mono text-sm text-(--ink) outline-none transition placeholder:text-(--muted)/60 focus:border-(--accent)";
 
   return (
     <form
@@ -160,32 +160,32 @@ export function ContactForm({
         ] as const
       ).map((field) => (
         <label key={field.key} className="flex flex-col gap-2 text-xs">
-          <span className="text-[var(--accent)]">{field.label}</span>
+          <span className="text-(--accent)">{field.label}</span>
           <input
             name={field.key}
             type={field.type}
             autoComplete={field.autoComplete}
             aria-invalid={Boolean(fieldErrors[field.key])}
-            className={`${fieldClass} ${fieldErrors[field.key] ? "border-[#ff6b6b]" : ""}`}
+            className={`${fieldClass} ${fieldErrors[field.key] ? "border-danger" : ""}`}
             placeholder={field.placeholder}
           />
           {fieldErrors[field.key] ? (
-            <span className="text-[#ff6b6b]">{fieldErrors[field.key]}</span>
+            <span className="text-danger">{fieldErrors[field.key]}</span>
           ) : null}
         </label>
       ))}
 
       <label className="flex flex-col gap-2 text-xs">
-        <span className="text-[var(--accent)]">{labels.message}</span>
+        <span className="text-(--accent)">{labels.message}</span>
         <textarea
           name="message"
           rows={5}
           aria-invalid={Boolean(fieldErrors.message)}
-          className={`${fieldClass} resize-y ${fieldErrors.message ? "border-[#ff6b6b]" : ""}`}
+          className={`${fieldClass} resize-y ${fieldErrors.message ? "border-danger" : ""}`}
           placeholder={labels.messagePlaceholder}
         />
         {fieldErrors.message ? (
-          <span className="text-[#ff6b6b]">{fieldErrors.message}</span>
+          <span className="text-danger">{fieldErrors.message}</span>
         ) : null}
       </label>
 
@@ -196,7 +196,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-ink)] transition hover:bg-[var(--accent-deep)] hover:text-white disabled:opacity-60"
+        className="inline-flex items-center justify-center rounded-full bg-(--accent) px-6 py-3 text-sm font-medium text-(--accent-ink) transition hover:bg-(--accent-deep) hover:text-white disabled:opacity-60"
       >
         {pending ? labels.sending : labels.submit}
       </button>

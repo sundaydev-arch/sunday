@@ -1,0 +1,144 @@
+name: Mobile Release
+
+# Tag mobile-v1.0.0, or Actions → Run workflow
+on:
+  push:
+    tags:
+      - "mobile-v*"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Store target"
+        type: choice
+        options:
+          - testflight-and-play-internal
+          - app-store
+          - play-production
+        default: testflight-and-play-internal
+      submit_for_review:
+        description: "iOS: submit for App Review after upload"
+        type: boolean
+        default: false
+
+concurrency:
+  group: mobile-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android
+    if: github.event_name == 'push' || inputs.target != 'app-store'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: apps/mobile/android
+
+      - name: Decode Android keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_BASE64" || { echo "No keystore secret; will build unsigned/debug-signed only"; exit 0; }
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > /tmp/sunday-upload.jks
+          {
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "storeFile=/tmp/sunday-upload.jks"
+          } > android/key.properties
+
+      - run: flutter pub get
+
+      - name: Build AAB
+        env:
+          DEFINES: ${{ secrets.MOBILE_DART_DEFINES }}
+        run: |
+          D="${DEFINES:-API_BASE_URL=https://sundaydev.vercel.app}"
+          flutter build appbundle --release --dart-define="$D"
+
+      - name: Upload to Play
+        if: ${{ vars.ENABLE_PLAY_UPLOAD == 'true' }}
+        working-directory: apps/mobile/android
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          MOBILE_DART_DEFINES: ${{ secrets.MOBILE_DART_DEFINES }}
+          LANE: ${{ github.event_name == 'workflow_dispatch' && inputs.target == 'play-production' && 'production' || 'internal' }}
+        run: |
+          test -n "$PLAY_SERVICE_ACCOUNT_JSON" || { echo "PLAY_SERVICE_ACCOUNT_JSON missing"; exit 1; }
+          bundle exec fastlane "$LANE"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: apps/mobile/build/app/outputs/bundle/release/*.aab
+          if-no-files-found: warn
+
+  ios:
+    name: iOS
+    if: github.event_name == 'push' || inputs.target != 'play-production'
+    runs-on: macos-latest
+    timeout-minutes: 75
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: apps/mobile/ios
+
+      - run: flutter pub get
+
+      - name: Fastlane TestFlight / App Store
+        if: ${{ vars.ENABLE_ASC_UPLOAD == 'true' }}
+        working-directory: apps/mobile/ios
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+          MOBILE_DART_DEFINES: ${{ secrets.MOBILE_DART_DEFINES }}
+          SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review == true && 'true' || 'false' }}
+          SKIP_METADATA: "true"
+          LANE: ${{ github.event_name == 'workflow_dispatch' && inputs.target == 'app-store' && 'release' || 'beta' }}
+        run: |
+          test -n "$ASC_KEY_ID" && test -n "$ASC_PRIVATE_KEY" || { echo "ASC secrets missing"; exit 1; }
+          bundle exec fastlane "$LANE"
+
+      - name: Build iOS (no store upload)
+        if: ${{ vars.ENABLE_ASC_UPLOAD != 'true' }}
+        env:
+          DEFINES: ${{ secrets.MOBILE_DART_DEFINES }}
+        run: |
+          D="${DEFINES:-API_BASE_URL=https://sundaydev.vercel.app}"
+          flutter build ios --release --no-codesign --dart-define="$D"

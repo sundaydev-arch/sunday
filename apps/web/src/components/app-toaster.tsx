@@ -12,13 +12,13 @@ export function AppToaster() {
       toastOptions={{
         classNames: {
           toast:
-            "font-mono !rounded-none !border !border-[var(--line)] !bg-[var(--panel)] !text-[var(--ink)] !shadow-none",
-          title: "!text-[var(--ink)]",
-          description: "!text-[var(--muted)]",
-          success: "!border-[var(--accent)]",
-          error: "!border-[#ff6b6b]",
+            "font-mono !rounded-none !border !border-(--line) !bg-(--panel) !text-(--ink) !shadow-none",
+          title: "!text-(--ink)",
+          description: "!text-(--muted)",
+          success: "!border-(--accent)",
+          error: "!border-danger",
           closeButton:
-            "!border-[var(--line)] !bg-[var(--field)] !text-[var(--muted)]",
+            "!border-(--line) !bg-(--field) !text-(--muted)",
         },
       }}
     />

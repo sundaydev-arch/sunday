@@ -18,7 +18,7 @@ Portfolio desktop app with content and feature parity against `@sunday/web`.
 ## Screens
 
 - Home · About · Projects · Contact
-- Locale toggle EN ↔ 中文 (persisted)
+- Locale toggle EN ↔ ZH (persisted)
 - Terminal / geek-shell visual language matching web
 
 ## Run

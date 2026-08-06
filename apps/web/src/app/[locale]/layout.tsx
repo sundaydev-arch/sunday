@@ -85,7 +85,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
       className={`${display.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-mono text-[var(--ink)]">
+      <body className="flex min-h-full flex-col font-mono text-(--ink)">
         <JsonLd data={jsonLd} />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <PostHogProvider>

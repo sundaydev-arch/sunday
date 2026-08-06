@@ -41,6 +41,20 @@ pnpm --filter @sunday/desktop typecheck && pnpm --filter @sunday/desktop test
 # Release: Actions → Desktop Cut Release (patch|minor|major) → draft GitHub Release
 ```
 
+## CI path filters
+
+App workflows stay isolated; shared packages fan out to dependents:
+
+| Change | Web CI · Lighthouse | Desktop CI | Mobile CI |
+| --- | --- | --- | --- |
+| `apps/web/**` | ✓ | | |
+| `apps/desktop/**` | | ✓ | |
+| `apps/mobile/**` | | | ✓ |
+| `packages/content` · `packages/contact` | ✓ | ✓ | ✓ |
+| `packages/analytics` · `packages/typescript-config` | ✓ | ✓ | |
+| Root tooling (`package.json`, lockfile, oxlint/oxfmt, turbo, …) | ✓ | ✓ (lint/format) | |
+
+Release CD (`desktop-v*` / `mobile-v*` tags or workflow_dispatch) is separate from these CI path filters.
 ## Layout
 
 ```text

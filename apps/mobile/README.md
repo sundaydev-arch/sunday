@@ -19,7 +19,7 @@ Portfolio app with content and feature parity against `@sunday/web`.
 ## Screens
 
 - Home · About · Projects · Contact
-- Locale toggle EN ↔ 中文 (persisted)
+- Locale toggle EN ↔ ZH (persisted)
 - Terminal / geek-shell visual language matching web
 
 ## Platforms
@@ -71,6 +71,16 @@ flutter build ios --no-codesign --debug
 ```
 
 CI: `.github/workflows/mobile.yml` (path-filtered on `apps/mobile/**`).
+
+## Packaging · CI/CD · Store submit
+
+See **[docs/RELEASE.md](./docs/RELEASE.md)** for local release builds, Fastlane lanes, GitHub Secrets, and auto submit-for-review.
+
+```bash
+flutter build appbundle --release --dart-define=API_BASE_URL=https://sundaydev.vercel.app
+flutter build ipa --release --dart-define=API_BASE_URL=https://sundaydev.vercel.app
+# tag release: git tag mobile-v1.0.0 && git push origin mobile-v1.0.0
+```
 
 ## Content sync
 
