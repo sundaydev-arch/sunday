@@ -11,7 +11,7 @@ export function HomePage() {
 
   return (
     <>
-      <section className="geek-shell relative min-h-svh overflow-x-clip px-4 pt-32 pb-14 sm:px-6 sm:pt-32 sm:pb-16">
+      <section className="geek-shell relative min-h-svh overflow-x-clip px-4 pt-40 pb-14 sm:px-6 sm:pt-40 sm:pb-16">
         <div aria-hidden className="scan-line" />
 
         <div className="hero-stack relative mx-auto flex max-w-5xl flex-col justify-end gap-6 pb-6 sm:gap-8 sm:pb-8">
@@ -64,7 +64,7 @@ export function HomePage() {
 
       <section className="border-t border-(--line) px-4 py-16 sm:px-6 sm:py-20 md:py-28">
         <div className="mx-auto max-w-5xl">
-          <p className="font-mono text-xs tracking-label text-(--accent) uppercase">
+          <p className="tracking-label font-mono text-xs text-(--accent) uppercase">
             {dict.home.selectedLabel}
           </p>
           <h2 className="font-display mt-3 text-2xl font-semibold tracking-tight break-words text-(--ink) sm:text-3xl md:text-4xl">

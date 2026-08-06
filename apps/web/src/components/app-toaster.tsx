@@ -17,8 +17,7 @@ export function AppToaster() {
           description: "!text-(--muted)",
           success: "!border-(--accent)",
           error: "!border-danger",
-          closeButton:
-            "!border-(--line) !bg-(--field) !text-(--muted)",
+          closeButton: "!border-(--line) !bg-(--field) !text-(--muted)",
         },
       }}
     />

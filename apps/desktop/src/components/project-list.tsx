@@ -46,7 +46,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
               {project.tags.map((tag) => (
                 <li
                   key={tag}
-                  className="border border-(--line) px-2 py-1 font-mono text-2xs tracking-wider text-(--muted) uppercase"
+                  className="text-2xs border border-(--line) px-2 py-1 font-mono tracking-wider text-(--muted) uppercase"
                 >
                   {tag}
                 </li>
