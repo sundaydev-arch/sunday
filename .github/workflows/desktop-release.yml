@@ -152,10 +152,10 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
-      # Empty APPLE_* / TAURI_SIGNING_* secrets become "" in Actions and make
-      # tauri-bundler attempt codesign/import, which fails. Only export when set.
+      # secrets cannot be used in `if:` (startup_failure). Gate inside the step
+      # so empty APPLE_CERTIFICATE is never exported (would break codesign).
       - name: Export macOS signing secrets
-        if: runner.os == 'macOS' && secrets.APPLE_CERTIFICATE != ''
+        if: runner.os == 'macOS'
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -164,6 +164,10 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
+          if [ -z "$APPLE_CERTIFICATE" ]; then
+            echo "No APPLE_CERTIFICATE secret; building unsigned."
+            exit 0
+          fi
           {
             echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
             echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
@@ -174,11 +178,14 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Export updater signing key
-        if: secrets.TAURI_SIGNING_PRIVATE_KEY != ''
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: |
+          if [ -z "$TAURI_SIGNING_PRIVATE_KEY" ]; then
+            echo "No TAURI_SIGNING_PRIVATE_KEY; skipping updater signatures."
+            exit 0
+          fi
           {
             echo "TAURI_SIGNING_PRIVATE_KEY<<EOF"
             echo "$TAURI_SIGNING_PRIVATE_KEY"
