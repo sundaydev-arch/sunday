@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:connectivity_plus/connectivity_plus.dart";
 import "package:flutter/foundation.dart";
 import "package:get_it/get_it.dart";
@@ -10,6 +12,11 @@ import "analytics.dart";
 import "flavor.dart";
 
 final GetIt getIt = GetIt.instance;
+
+/// Completes when DI + analytics finished — splash can exit safely.
+final Completer<void> bootstrapCompleter = Completer<void>();
+
+Future<void> get bootstrapReady => bootstrapCompleter.future;
 
 Future<void> configureDependencies() async {
   if (getIt.isRegistered<SharedPreferences>()) {
@@ -42,6 +49,16 @@ Future<void> configureDependencies() async {
 }
 
 Future<void> bootstrapApp() async {
-  await configureDependencies();
-  await Analytics.instance.init();
+  try {
+    await configureDependencies();
+    await Analytics.instance.init();
+    if (!bootstrapCompleter.isCompleted) {
+      bootstrapCompleter.complete();
+    }
+  } catch (error, stackTrace) {
+    if (!bootstrapCompleter.isCompleted) {
+      bootstrapCompleter.completeError(error, stackTrace);
+    }
+    rethrow;
+  }
 }

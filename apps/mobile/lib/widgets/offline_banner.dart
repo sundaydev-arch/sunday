@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
@@ -7,15 +9,10 @@ import "../data/connectivity_service.dart";
 import "../data/contact_outbox.dart";
 import "../i18n/locale_controller.dart";
 
-final connectivityServiceProvider = Provider<ConnectivityService>(
-  (ref) => getIt<ConnectivityService>(),
-);
-
-final contactOutboxProvider = Provider<ContactOutbox>(
-  (ref) => getIt<ContactOutbox>(),
-);
-
 /// Strip below the top chrome when offline or draining the outbox.
+///
+/// Attaches to GetIt only after [bootstrapReady] — startup paints the shell
+/// before DI finishes, so we must not touch registrations on first frame.
 class OfflineBanner extends ConsumerStatefulWidget {
   const OfflineBanner({super.key});
 
@@ -28,13 +25,32 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner> {
   ContactOutbox? _outbox;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    unawaited(_attachWhenReady());
+  }
+
+  Future<void> _attachWhenReady() async {
+    try {
+      await bootstrapReady.timeout(const Duration(seconds: 8));
+    } catch (_) {
+      return;
+    }
+    if (!mounted) return;
     if (_connectivity != null) return;
-    _connectivity = ref.read(connectivityServiceProvider);
-    _outbox = ref.read(contactOutboxProvider);
-    _connectivity!.addListener(_onChange);
-    _outbox!.addListener(_onChange);
+    if (!getIt.isRegistered<ConnectivityService>() ||
+        !getIt.isRegistered<ContactOutbox>()) {
+      return;
+    }
+
+    final connectivity = getIt<ConnectivityService>();
+    final outbox = getIt<ContactOutbox>();
+    connectivity.addListener(_onChange);
+    outbox.addListener(_onChange);
+    setState(() {
+      _connectivity = connectivity;
+      _outbox = outbox;
+    });
   }
 
   void _onChange() {
