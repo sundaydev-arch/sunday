@@ -1,18 +1,9 @@
 name: Desktop Release
 
-# Builds installers and uploads a draft GitHub Release.
-#
-# Triggers:
-#   1. Preferred: Actions → "Desktop Cut Release" (bump + tag + calls this workflow)
-#   2. Manual tag from a developer machine:
-#        git tag desktop-v0.1.1 && git push origin desktop-v0.1.1
-#
+# Reusable builder — called by Desktop Cut Release or Desktop Release Tag.
 # Optional signing / client env secrets — see apps/desktop/README.md
 
 on:
-  push:
-    tags:
-      - "desktop-v*"
   workflow_call:
     inputs:
       version:
@@ -25,7 +16,7 @@ on:
         type: string
 
 concurrency:
-  group: desktop-release-${{ github.workflow }}-${{ github.ref }}-${{ github.run_id }}
+  group: desktop-release-${{ inputs.tag }}
   cancel-in-progress: false
 
 permissions:
@@ -58,30 +49,9 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Resolve version
-        id: ver
-        shell: bash
-        env:
-          INPUT_VERSION: ${{ inputs.version }}
-          INPUT_TAG: ${{ inputs.tag }}
-        run: |
-          if [ -n "$INPUT_VERSION" ] && [ -n "$INPUT_TAG" ]; then
-            VERSION="$INPUT_VERSION"
-            TAG="$INPUT_TAG"
-          else
-            VERSION="${GITHUB_REF_NAME#desktop-v}"
-            TAG="$GITHUB_REF_NAME"
-          fi
-          if [ -z "$VERSION" ] || [ -z "$TAG" ]; then
-            echo "Could not resolve version/tag" >&2
-            exit 1
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-
       - uses: actions/checkout@v4
         with:
-          ref: ${{ steps.ver.outputs.tag }}
+          ref: ${{ inputs.tag }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -142,9 +112,9 @@ jobs:
         with:
           projectPath: apps/desktop
           tauriScript: pnpm tauri
-          version: ${{ steps.ver.outputs.version }}
-          tagName: ${{ steps.ver.outputs.tag }}
-          releaseName: Sunday desktop v${{ steps.ver.outputs.version }}
+          version: ${{ inputs.version }}
+          tagName: ${{ inputs.tag }}
+          releaseName: Sunday desktop v${{ inputs.version }}
           releaseBody: |
             Desktop installers for **Nathan Zhao** portfolio (`@sunday/desktop`).
 
