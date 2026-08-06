@@ -95,12 +95,12 @@ In-app updates use [`tauri-plugin-updater`](https://v2.tauri.app/plugin/updater/
 
 `https://github.com/sundaydev-arch/sunday/releases/latest/download/latest.json`
 
-| Piece             | Where                                                               |
-| ----------------- | ------------------------------------------------------------------- |
-| Public key        | `apps/desktop/src-tauri/tauri.conf.json` → `plugins.updater.pubkey` |
-| Private key       | GitHub secret `TAURI_SIGNING_PRIVATE_KEY` (never commit)            |
-| Optional password | `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`                                |
-| Client UX         | Silent check on launch + **Help → Check for Updates…**              |
+| Piece | Where |
+| --- | --- |
+| Public key | `apps/desktop/src-tauri/tauri.conf.json` → `plugins.updater.pubkey` |
+| Private key | GitHub secret `TAURI_SIGNING_PRIVATE_KEY` (never commit) |
+| Optional password | `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` |
+| Client UX | Silent check on launch + **Help → Check for Updates…** |
 
 A keypair was generated under gitignored `.local/sunday-updater.key` on the machine that scaffolded this. Upload it once:
 
@@ -122,14 +122,14 @@ Debug CI builds disable updater artifacts (`createUpdaterArtifacts: false` overr
 
 ### Optional secrets (Apple / client env)
 
-| Secret                                                                                                                    | Purpose                                    |
-| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `APPLE_CERTIFICATE`                                                                                                       | Base64 `.p12` for macOS codesign           |
-| `APPLE_CERTIFICATE_PASSWORD`                                                                                              | P12 password                               |
-| `APPLE_SIGNING_IDENTITY`                                                                                                  | e.g. `Developer ID Application: …`         |
-| `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID`                                                                           | Notarization (app-specific password)       |
+| Secret                                                                                                                    | Purpose                              |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `APPLE_CERTIFICATE`                                                                                                       | Base64 `.p12` for macOS codesign     |
+| `APPLE_CERTIFICATE_PASSWORD`                                                                                              | P12 password                         |
+| `APPLE_SIGNING_IDENTITY`                                                                                                  | e.g. `Developer ID Application: …`   |
+| `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID`                                                                           | Notarization (app-specific password) |
 | `TAURI_SIGNING_PRIVATE_KEY` / `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`                                                        | **Required** for Desktop Release (updater) |
-| `DESKTOP_TURNSTILE_SITE_KEY` / `DESKTOP_SENTRY_DSN` / `DESKTOP_POSTHOG_KEY` / `DESKTOP_POSTHOG_HOST` / `DESKTOP_CAL_LINK` | Baked into release builds                  |
+| `DESKTOP_TURNSTILE_SITE_KEY` / `DESKTOP_SENTRY_DSN` / `DESKTOP_POSTHOG_KEY` / `DESKTOP_POSTHOG_HOST` / `DESKTOP_CAL_LINK` | Baked into release builds            |
 
 Without Apple secrets, CI still uploads installers (Gatekeeper may warn). Windows ships an **NSIS** `.exe` (current-user). MSI is not in the release matrix.
 

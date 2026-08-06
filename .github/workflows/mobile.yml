@@ -36,9 +36,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.41.6"
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Messages in sync with @sunday/content
+        working-directory: ${{ github.workspace }}
+        run: node scripts/sync-mobile-messages.mjs --check
+      - name: Contact mirror in sync with @sunday/contact
+        working-directory: ${{ github.workspace }}
+        run: node scripts/sync-mobile-contact.mjs --check
       - run: dart format --output=none --set-exit-if-changed .
       - run: flutter analyze --fatal-infos
       - run: flutter test
@@ -56,6 +63,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.41.6"
           channel: stable
           cache: true
       - uses: actions/setup-java@v4
@@ -63,7 +71,7 @@ jobs:
           distribution: temurin
           java-version: 17
       - run: flutter pub get
-      - run: flutter build apk --debug --dart-define=API_BASE_URL=https://sundaydev.vercel.app
+      - run: flutter build apk --debug --flavor dev -t lib/main_dev.dart --dart-define=API_BASE_URL=https://sundaydev.vercel.app
 
   build-ios:
     name: Build iOS (no codesign)
@@ -78,7 +86,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.41.6"
           channel: stable
           cache: true
       - run: flutter pub get
-      - run: flutter build ios --no-codesign --debug
+      - run: flutter build ios --no-codesign --debug -t lib/main_dev.dart

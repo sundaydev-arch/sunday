@@ -14,7 +14,7 @@ void main() {
       expect(result.data!.email, "you@domain.dev");
     });
 
-    test("rejects empty fields", () {
+    test("rejects empty fields with missing_fields", () {
       final result = parseContactBody(name: " ", email: "", message: "");
       expect(result.success, isFalse);
       expect(result.error, "missing_fields");
