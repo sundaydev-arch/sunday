@@ -70,7 +70,7 @@ function syncCargoLock(version) {
     `$1${version}$2`,
   );
   if (next === lock) {
-    throw new Error('Could not find sunday_desktop version in Cargo.lock');
+    throw new Error("Could not find sunday_desktop version in Cargo.lock");
   }
   writeFileSync(cargoLockPath, next);
 
