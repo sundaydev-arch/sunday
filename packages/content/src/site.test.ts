@@ -37,8 +37,6 @@ describe("dictionary", () => {
     const en = getDictionary("en");
     const zh = getDictionary("zh");
     expect(getProjectsFromDict(en).length).toBeGreaterThan(0);
-    expect(getProjectsFromDict(zh).length).toBe(
-      getProjectsFromDict(en).length,
-    );
+    expect(getProjectsFromDict(zh).length).toBe(getProjectsFromDict(en).length);
   });
 });

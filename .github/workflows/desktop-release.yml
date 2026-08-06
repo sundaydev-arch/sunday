@@ -1,22 +1,21 @@
 name: Desktop Release
 
-# Reusable builder — called by Desktop Cut Release or Desktop Release Tag.
-# Optional signing / client env secrets — see apps/desktop/README.md
+# Tag push OR workflow_dispatch → build installers → draft GitHub Release.
+# Preferred: Actions → Desktop Cut Release (bumps, tags, then triggers this).
 
 on:
-  workflow_call:
+  push:
+    tags:
+      - "desktop-v*"
+  workflow_dispatch:
     inputs:
       version:
-        description: Semver without prefix (e.g. 0.1.1)
-        required: true
-        type: string
-      tag:
-        description: Git tag (e.g. desktop-v0.1.1)
+        description: Semver without prefix (e.g. 0.1.2)
         required: true
         type: string
 
 concurrency:
-  group: desktop-release-${{ inputs.tag }}
+  group: desktop-release-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: false
 
 permissions:
@@ -34,24 +33,40 @@ jobs:
         include:
           - platform: macos-latest
             label: macOS arm64
-            args: --target aarch64-apple-darwin
-            rust_targets: aarch64-apple-darwin
+            target: aarch64-apple-darwin
           - platform: macos-latest
             label: macOS x64
-            args: --target x86_64-apple-darwin
-            rust_targets: x86_64-apple-darwin
+            target: x86_64-apple-darwin
           - platform: windows-latest
             label: Windows
-            args: ""
-            rust_targets: ""
+            target: ""
 
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 60
 
     steps:
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+            TAG="desktop-v${VERSION}"
+          else
+            TAG="$GITHUB_REF_NAME"
+            VERSION="${TAG#desktop-v}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if [ -n "${{ matrix.target }}" ]; then
+            echo "tauri_args=--target ${{ matrix.target }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tauri_args=" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ steps.ver.outputs.tag }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -63,8 +78,10 @@ jobs:
           cache: pnpm
 
       - uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.rust_targets }}
+
+      - name: Add Rust target
+        if: matrix.target != ''
+        run: rustup target add ${{ matrix.target }}
 
       - uses: swatinem/rust-cache@v2
         with:
@@ -112,9 +129,9 @@ jobs:
         with:
           projectPath: apps/desktop
           tauriScript: pnpm tauri
-          version: ${{ inputs.version }}
-          tagName: ${{ inputs.tag }}
-          releaseName: Sunday desktop v${{ inputs.version }}
+          version: ${{ steps.ver.outputs.version }}
+          tagName: ${{ steps.ver.outputs.tag }}
+          releaseName: Sunday desktop v${{ steps.ver.outputs.version }}
           releaseBody: |
             Desktop installers for **Nathan Zhao** portfolio (`@sunday/desktop`).
 
@@ -125,4 +142,4 @@ jobs:
             Unsigned builds work for local/testing; Gatekeeper / SmartScreen may warn without signing secrets.
           releaseDraft: true
           prerelease: false
-          args: ${{ matrix.args }}
+          args: ${{ steps.ver.outputs.tauri_args }}
