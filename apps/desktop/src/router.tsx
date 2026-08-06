@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { AppToaster } from "@/components/app-toaster";
 import { PillNav } from "@/components/pill-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { TitleBar } from "@/components/title-bar";
 import { capturePageView } from "@/lib/analytics";
 import { AboutPage } from "@/routes/about-page";
 import { ContactPage } from "@/routes/contact-page";
@@ -24,6 +25,7 @@ function RootLayout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-(--background)">
+      <TitleBar />
       <PillNav />
       <main className="flex-1">
         <Outlet />
