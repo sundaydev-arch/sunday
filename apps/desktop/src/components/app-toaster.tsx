@@ -7,8 +7,7 @@ export function AppToaster() {
       position="bottom-right"
       toastOptions={{
         classNames: {
-          toast:
-            "font-mono border border-(--line) bg-(--panel) text-(--ink)",
+          toast: "font-mono border border-(--line) bg-(--panel) text-(--ink)",
           description: "text-(--muted)",
         },
       }}

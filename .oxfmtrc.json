@@ -19,6 +19,9 @@
     "dist",
     "*.tsbuildinfo",
     "apps/mobile",
-    "apps/desktop/src-tauri"
+    "apps/desktop/src-tauri",
+    ".vscode",
+    ".cursor",
+    "branding"
   ]
 }

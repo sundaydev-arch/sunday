@@ -7,9 +7,7 @@
   },
   "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
   "tailwindCSS.lint.invalidApply": "warning",
-  "tailwindCSS.classFunctions": [
-    "cn"
-  ],
+  "tailwindCSS.classFunctions": ["cn"],
   "tailwindCSS.files.exclude": [
     "**/node_modules/**",
     "**/src-tauri/target/**",

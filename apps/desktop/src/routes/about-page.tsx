@@ -5,9 +5,9 @@ export function AboutPage() {
   const { dict } = useLocale();
 
   return (
-    <div className="geek-shell px-4 pt-32 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
+    <div className="geek-shell px-4 pt-40 pb-20 sm:px-6 sm:pt-40 sm:pb-24">
       <div className="mx-auto max-w-3xl">
-        <p className="animate-rise font-mono text-xs tracking-label text-(--accent) uppercase">
+        <p className="animate-rise tracking-label font-mono text-xs text-(--accent) uppercase">
           {dict.about.eyebrow}
         </p>
         <h1 className="animate-rise font-display mt-3 text-3xl font-semibold tracking-tight break-words text-(--ink) sm:text-4xl md:text-5xl">
@@ -28,7 +28,7 @@ export function AboutPage() {
           className="animate-rise mt-12 border-t border-(--line) pt-8 sm:mt-14 sm:pt-10"
           style={{ animationDelay: "160ms" }}
         >
-          <h2 className="font-mono text-xs tracking-label text-(--accent) uppercase">
+          <h2 className="tracking-label font-mono text-xs text-(--accent) uppercase">
             {dict.about.strengthsLabel}
           </h2>
           <ul className="mt-6 space-y-5">
@@ -37,9 +37,7 @@ export function AboutPage() {
                 key={item.label}
                 className="font-mono text-sm break-words sm:text-base"
               >
-                <span className="font-medium text-(--ink)">
-                  {item.label}
-                </span>
+                <span className="font-medium text-(--ink)">{item.label}</span>
                 <span className="text-(--muted)"> — {item.value}</span>
               </li>
             ))}
@@ -51,7 +49,7 @@ export function AboutPage() {
           style={{ animationDelay: "220ms" }}
         >
           <div>
-            <dt className="text-xs tracking-label text-(--accent) uppercase">
+            <dt className="tracking-label text-xs text-(--accent) uppercase">
               {dict.about.focusLabel}
             </dt>
             <dd className="mt-2 text-sm break-words text-(--ink)">
@@ -59,7 +57,7 @@ export function AboutPage() {
             </dd>
           </div>
           <div className="min-w-0 sm:col-span-2">
-            <dt className="text-xs tracking-label text-(--accent) uppercase">
+            <dt className="tracking-label text-xs text-(--accent) uppercase">
               frontend[]
             </dt>
             <dd className="mt-2 text-sm leading-relaxed break-words text-(--ink)">
@@ -67,7 +65,7 @@ export function AboutPage() {
             </dd>
           </div>
           <div className="min-w-0 sm:col-span-2">
-            <dt className="text-xs tracking-label text-(--accent) uppercase">
+            <dt className="tracking-label text-xs text-(--accent) uppercase">
               backend[]
             </dt>
             <dd className="mt-2 text-sm leading-relaxed break-words text-(--ink)">
@@ -75,7 +73,7 @@ export function AboutPage() {
             </dd>
           </div>
           <div className="min-w-0 sm:col-span-2">
-            <dt className="text-xs tracking-label text-(--accent) uppercase">
+            <dt className="tracking-label text-xs text-(--accent) uppercase">
               data_ops[]
             </dt>
             <dd className="mt-2 text-sm leading-relaxed break-words text-(--ink)">

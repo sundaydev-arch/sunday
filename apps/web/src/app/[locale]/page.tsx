@@ -84,7 +84,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
       <section className="border-t border-(--line) px-4 py-16 sm:px-6 sm:py-20 md:py-28">
         <div className="mx-auto max-w-5xl">
-          <p className="font-mono text-xs tracking-label text-(--accent) uppercase">
+          <p className="tracking-label font-mono text-xs text-(--accent) uppercase">
             {dict.home.selectedLabel}
           </p>
           <h2 className="font-display mt-3 text-2xl font-semibold tracking-tight break-words text-(--ink) sm:text-3xl md:text-4xl">

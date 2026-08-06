@@ -11,10 +11,10 @@ export function ContactPage() {
   const calUrl = getCalUrl();
 
   return (
-    <div className="geek-shell px-4 pt-32 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
+    <div className="geek-shell px-4 pt-40 pb-20 sm:px-6 sm:pt-40 sm:pb-24">
       <div className="contact-split mx-auto max-w-5xl">
         <div className="min-w-0">
-          <p className="animate-rise font-mono text-xs tracking-label text-(--accent) uppercase">
+          <p className="animate-rise tracking-label font-mono text-xs text-(--accent) uppercase">
             {dict.contact.eyebrow}
           </p>
           <h1 className="animate-rise font-display mt-3 text-3xl font-semibold tracking-tight break-words text-(--ink) sm:text-4xl md:text-5xl">
@@ -84,7 +84,7 @@ export function ContactPage() {
           style={{ animationDelay: "180ms" }}
           aria-labelledby="cal-heading"
         >
-          <p className="font-mono text-xs tracking-label text-(--accent) uppercase">
+          <p className="tracking-label font-mono text-xs text-(--accent) uppercase">
             {dict.contact.calEyebrow}
           </p>
           <h2
