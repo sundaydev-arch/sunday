@@ -1,7 +1,7 @@
 name: Desktop Release
 
-# Tag push OR workflow_dispatch → build installers → draft GitHub Release.
-# Preferred: Actions → Desktop Cut Release (bumps, tags, then triggers this).
+# Tag push → build installers → draft GitHub Release.
+# Prefer: Actions → Desktop Cut Release (bumps + tags + dispatches this workflow).
 
 on:
   push:
@@ -10,12 +10,12 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Semver without prefix (e.g. 0.1.2)
+        description: Semver without prefix (e.g. 0.1.3)
         required: true
         type: string
 
 concurrency:
-  group: desktop-release-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  group: desktop-release-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -33,13 +33,16 @@ jobs:
         include:
           - platform: macos-latest
             label: macOS arm64
-            target: aarch64-apple-darwin
+            rust_target: aarch64-apple-darwin
+            tauri_args: --target aarch64-apple-darwin
           - platform: macos-latest
             label: macOS x64
-            target: x86_64-apple-darwin
+            rust_target: x86_64-apple-darwin
+            tauri_args: --target x86_64-apple-darwin
           - platform: windows-latest
             label: Windows
-            target: ""
+            rust_target: none
+            tauri_args: --bundles nsis
 
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 60
@@ -58,11 +61,6 @@ jobs:
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          if [ -n "${{ matrix.target }}" ]; then
-            echo "tauri_args=--target ${{ matrix.target }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tauri_args=" >> "$GITHUB_OUTPUT"
-          fi
 
       - uses: actions/checkout@v4
         with:
@@ -80,8 +78,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Add Rust target
-        if: matrix.target != ''
-        run: rustup target add ${{ matrix.target }}
+        if: matrix.rust_target != 'none'
+        run: rustup target add ${{ matrix.rust_target }}
 
       - uses: swatinem/rust-cache@v2
         with:
@@ -91,12 +89,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Import Apple signing certificate
-        if: runner.os == 'macOS' && secrets.APPLE_CERTIFICATE != ''
+        if: runner.os == 'macOS'
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ github.run_id }}
         run: |
+          if [ -z "$APPLE_CERTIFICATE" ]; then
+            echo "No APPLE_CERTIFICATE secret; skipping codesign import."
+            exit 0
+          fi
           CERT_PATH="$RUNNER_TEMP/certificate.p12"
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
           echo "$APPLE_CERTIFICATE" | base64 --decode > "$CERT_PATH"
@@ -142,4 +144,4 @@ jobs:
             Unsigned builds work for local/testing; Gatekeeper / SmartScreen may warn without signing secrets.
           releaseDraft: true
           prerelease: false
-          args: ${{ steps.ver.outputs.tauri_args }}
+          args: ${{ matrix.tauri_args }}
