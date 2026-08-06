@@ -1,6 +1,12 @@
-// Client-side contact validation — mirrors `apps/web/src/lib/contact.ts`.
+// GENERATED FILE — do not edit by hand.
+// Source: packages/contact/src/contract.json (@sunday/contact)
+// Regenerate: node scripts/sync-mobile-contact.mjs
 
 typedef ContactValidationError = String;
+
+const contactNameMax = 120;
+const contactEmailMax = 254;
+const contactMessageMax = 5000;
 
 const contactErrorMessages = <ContactValidationError, String>{
   "missing_fields": "Please fill in all fields.",
@@ -14,7 +20,7 @@ const contactErrorMessages = <ContactValidationError, String>{
 };
 
 final _emailPattern = RegExp(
-  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$",
+  r"^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$",
 );
 
 class ContactPayload {
@@ -37,6 +43,15 @@ class ContactPayload {
     if (turnstileToken != null && turnstileToken!.isNotEmpty)
       "turnstileToken": turnstileToken,
   };
+
+  factory ContactPayload.fromJson(Map<String, dynamic> json) {
+    return ContactPayload(
+      name: json["name"] as String,
+      email: json["email"] as String,
+      message: json["message"] as String,
+      turnstileToken: json["turnstileToken"] as String?,
+    );
+  }
 }
 
 class ContactParseResult {
@@ -63,20 +78,20 @@ ContactParseResult parseContactBody({
 
   if (trimmedName.isEmpty) {
     fieldErrors["name"] = "missing_fields";
-  } else if (trimmedName.length > 120) {
+  } else if (trimmedName.length > contactNameMax) {
     fieldErrors["name"] = "name_too_long";
   }
 
   if (trimmedEmail.isEmpty) {
     fieldErrors["email"] = "missing_fields";
-  } else if (trimmedEmail.length > 254 ||
+  } else if (trimmedEmail.length > contactEmailMax ||
       !_emailPattern.hasMatch(trimmedEmail)) {
     fieldErrors["email"] = "invalid_email";
   }
 
   if (trimmedMessage.isEmpty) {
     fieldErrors["message"] = "missing_fields";
-  } else if (trimmedMessage.length > 5000) {
+  } else if (trimmedMessage.length > contactMessageMax) {
     fieldErrors["message"] = "message_too_long";
   }
 

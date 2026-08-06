@@ -1,5 +1,6 @@
 export {
   contactErrorMessages,
+  contactLimits,
   contactSchema,
   parseContactBody,
   toContactMessage,

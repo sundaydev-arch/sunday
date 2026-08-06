@@ -35,6 +35,19 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Nathan (dev)")
+        }
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Nathan Zhao")
+        }
+    }
+
     signingConfigs {
         if (keystorePropertiesFile.exists()) {
             create("release") {
@@ -48,12 +61,12 @@ android {
 
     buildTypes {
         release {
-            signingConfig =
-                if (keystorePropertiesFile.exists()) {
-                    signingConfigs.getByName("release")
-                } else {
-                    signingConfigs.getByName("debug")
-                }
+            // Fail closed: never silently debug-sign a release artifact.
+            check(keystorePropertiesFile.exists()) {
+                "Missing android/key.properties — refuse to build an unsigned/debug-signed release. " +
+                    "Copy key.properties.example and configure the upload keystore."
+            }
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }

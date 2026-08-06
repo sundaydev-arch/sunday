@@ -61,17 +61,20 @@ keytool -genkey -v -keystore ~/sunday-upload.jks -keyalg RSA -keysize 2048 -vali
 
 | Layer | Trigger | What it does |
 | --- | --- | --- |
-| **PR / push** | `mobile.yml` | format · analyze · test · debug build (existing) |
-| **Release** | tag `mobile-v*` or `workflow_dispatch` | signed release → TestFlight / Play internal |
+| **PR / push** | `mobile.yml` | format · analyze · test · content sync check · debug build |
+| **Cut release** | `mobile-cut-release.yml` (workflow_dispatch) | bump pubspec · tag `mobile-v*` · dispatch Mobile Release |
+| **Release** | tag `mobile-v*` or `workflow_dispatch` | signed release → TestFlight / Play internal (fail-closed on missing secrets) |
 | **Store submit** | Fastlane lane + optional `submit_for_review: true` | upload and submit for review |
 
 Suggested cadence:
 
 ```text
-merge to main → tag mobile-v1.0.0 → CI uploads TestFlight + Play internal
+merge to main → Actions → Mobile Cut Release (patch)
+  → CI uploads TestFlight + Play internal
   → smoke-test → submit the same build for production review
-    (or re-run submit lane / another tag)
 ```
+
+`MOBILE_DART_DEFINES` must be set (JSON for `--dart-define-from-file`, or a single `KEY=value`). Release builds refuse empty defines and refuse missing Android keystore.
 
 ---
 

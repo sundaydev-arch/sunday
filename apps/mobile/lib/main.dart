@@ -3,14 +3,16 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:sentry_flutter/sentry_flutter.dart";
 
 import "app.dart";
-import "core/analytics.dart";
 import "core/config.dart";
+import "core/di.dart";
+import "core/flavor.dart";
 
-Future<void> main() async {
+Future<void> startApp(AppFlavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlavorConfig.flavor = flavor;
 
   Future<void> bootstrap() async {
-    await Analytics.instance.init();
+    await bootstrapApp();
     runApp(const ProviderScope(child: SundayApp()));
   }
 
@@ -18,12 +20,13 @@ Future<void> main() async {
     await SentryFlutter.init((options) {
       options.dsn = AppConfig.sentryDsn;
       options.tracesSampleRate = 0.1;
-      options.environment = const String.fromEnvironment(
-        "SENTRY_ENVIRONMENT",
-        defaultValue: "production",
-      );
+      options.environment = FlavorConfig.label;
+      options.dist = FlavorConfig.label;
     }, appRunner: bootstrap);
   } else {
     await bootstrap();
   }
 }
+
+/// Default entry — production flavor.
+Future<void> main() => startApp(AppFlavor.prod);

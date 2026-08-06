@@ -3,6 +3,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import "../core/theme.dart";
 import "../i18n/locale_controller.dart";
+import "../widgets/app_chrome.dart";
+import "../widgets/app_error.dart";
+import "../widgets/page_header.dart";
 import "../widgets/project_tile.dart";
 import "../widgets/site_footer.dart";
 
@@ -14,40 +17,39 @@ class ProjectsScreen extends ConsumerWidget {
     final dictAsync = ref.watch(dictionaryProvider);
 
     return dictAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text("$e")),
+      loading: () =>
+          const PageScaffold(child: Center(child: CircularProgressIndicator())),
+      error: (e, _) => PageScaffold(
+        child: AppErrorView(
+          title: "Couldn't load projects",
+          detail: "$e",
+          onRetry: () => ref.invalidate(dictionaryProvider),
+        ),
+      ),
       data: (dict) {
-        final theme = Theme.of(context);
         final projects = dict.projects;
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
-          children: [
-            Text(
-              projects["eyebrow"] as String,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: SundayColors.accent,
-                letterSpacing: 1.2,
-              ),
+        final items = dict.items;
+        return PageScaffold(
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(
+              SundaySpace.pageX,
+              appTopChromeInset(context) + 8,
+              SundaySpace.pageX,
+              appBottomChromeInset(context),
             ),
-            const SizedBox(height: 10),
-            Text(
-              projects["title"] as String,
-              style: theme.textTheme.headlineLarge?.copyWith(
-                color: SundayColors.ink,
+            children: [
+              PageHeader(
+                title: projects["title"] as String,
+                blurb: projects["blurb"] as String,
               ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              projects["blurb"] as String,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: SundayColors.muted,
-                height: 1.55,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ...dict.items.map((p) => ProjectTile(project: p)),
-            SiteFooter(dict: dict),
-          ],
+              const SizedBox(height: 20),
+              for (var i = 0; i < items.length; i++) ...[
+                if (i > 0) Container(height: 1, color: SundayColors.line),
+                ProjectTile(project: items[i], index: i + 1),
+              ],
+              SiteFooter(dict: dict),
+            ],
+          ),
         );
       },
     );

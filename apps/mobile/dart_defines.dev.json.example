@@ -1,0 +1,6 @@
+{
+  "HTTPS_PROXY": "http://127.0.0.1:7890",
+  "TURNSTILE_SITE_KEY": "",
+  "API_BASE_URL": "https://sundaydev.vercel.app",
+  "CAL_LINK": "https://cal.com/nathan-zhao"
+}

@@ -1,18 +1,33 @@
 import { z } from "zod";
+import contract from "./contract.json" with { type: "json" };
+
+export type ContactValidationError =
+  (typeof contract.errorCodes)[number];
+
+export const contactLimits = contract.limits;
+
+export const contactErrorMessages = contract.errorMessages as Record<
+  ContactValidationError,
+  string
+>;
 
 export const contactSchema = z.object({
-  name: z.string().trim().min(1, "missing_fields").max(120, "name_too_long"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "missing_fields")
+    .max(contactLimits.nameMax, "name_too_long"),
   email: z
     .string()
     .trim()
     .min(1, "missing_fields")
     .email("invalid_email")
-    .max(254, "invalid_email"),
+    .max(contactLimits.emailMax, "invalid_email"),
   message: z
     .string()
     .trim()
     .min(1, "missing_fields")
-    .max(5000, "message_too_long"),
+    .max(contactLimits.messageMax, "message_too_long"),
   turnstileToken: z.string().optional(),
 });
 
@@ -20,16 +35,6 @@ export type ContactPayload = z.infer<typeof contactSchema>;
 
 /** Fields persisted to Supabase (no captcha token). */
 export type ContactMessage = Pick<ContactPayload, "name" | "email" | "message">;
-
-export type ContactValidationError =
-  | "missing_fields"
-  | "invalid_email"
-  | "invalid_body"
-  | "name_too_long"
-  | "message_too_long"
-  | "captcha_required"
-  | "captcha_failed"
-  | "rate_limited";
 
 export function parseContactBody(input: unknown):
   | { ok: true; data: ContactPayload }
@@ -73,14 +78,3 @@ export function toContactMessage(data: ContactPayload): ContactMessage {
     message: data.message,
   };
 }
-
-export const contactErrorMessages: Record<ContactValidationError, string> = {
-  missing_fields: "Please fill in all fields.",
-  invalid_email: "Please enter a valid email.",
-  invalid_body: "Invalid request.",
-  name_too_long: "Name is too long.",
-  message_too_long: "Message is too long.",
-  captcha_required: "Please complete the captcha.",
-  captcha_failed: "Captcha verification failed. Please try again.",
-  rate_limited: "Too many messages. Please wait and try again.",
-};
