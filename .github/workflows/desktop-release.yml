@@ -25,7 +25,7 @@ on:
         type: string
 
 concurrency:
-  group: desktop-release-${{ inputs.tag || github.ref }}
+  group: desktop-release-${{ github.workflow }}-${{ github.ref }}-${{ github.run_id }}
   cancel-in-progress: false
 
 permissions:
@@ -61,10 +61,13 @@ jobs:
       - name: Resolve version
         id: ver
         shell: bash
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
-          if [ -n "${{ inputs.version }}" ]; then
-            VERSION="${{ inputs.version }}"
-            TAG="${{ inputs.tag }}"
+          if [ -n "$INPUT_VERSION" ] && [ -n "$INPUT_TAG" ]; then
+            VERSION="$INPUT_VERSION"
+            TAG="$INPUT_TAG"
           else
             VERSION="${GITHUB_REF_NAME#desktop-v}"
             TAG="$GITHUB_REF_NAME"
