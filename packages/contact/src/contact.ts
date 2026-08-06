@@ -1,8 +1,7 @@
 import { z } from "zod";
 import contract from "./contract.json" with { type: "json" };
 
-export type ContactValidationError =
-  (typeof contract.errorCodes)[number];
+export type ContactValidationError = (typeof contract.errorCodes)[number];
 
 export const contactLimits = contract.limits;
 

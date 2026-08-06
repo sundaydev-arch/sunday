@@ -13,10 +13,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const contractPath = join(root, "packages/contact/src/contract.json");
-const destPath = join(
-  root,
-  "apps/mobile/lib/data/contact_validation.dart",
-);
+const destPath = join(root, "apps/mobile/lib/data/contact_validation.dart");
 const check = process.argv.includes("--check");
 
 const contract = JSON.parse(readFileSync(contractPath, "utf8"));
@@ -143,7 +140,9 @@ try {
 
 if (current === dart) {
   if (!check) {
-    console.error("Mobile contact validation already in sync with @sunday/contact.");
+    console.error(
+      "Mobile contact validation already in sync with @sunday/contact.",
+    );
   }
   process.exit(0);
 }
