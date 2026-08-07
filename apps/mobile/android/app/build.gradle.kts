@@ -61,13 +61,23 @@ android {
 
     buildTypes {
         release {
-            // Fail closed: never silently debug-sign a release artifact.
-            check(keystorePropertiesFile.exists()) {
-                "Missing android/key.properties — refuse to build an unsigned/debug-signed release. " +
-                    "Copy key.properties.example and configure the upload keystore."
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
             }
-            signingConfig = signingConfigs.getByName("release")
         }
+    }
+}
+
+// Fail closed only when a Release task is actually in the graph (not at config time —
+// otherwise assembleDevDebug would also trip the missing key.properties check).
+gradle.taskGraph.whenReady {
+    val buildingRelease =
+        allTasks.any { it.name.contains("Release", ignoreCase = true) }
+    if (buildingRelease && !keystorePropertiesFile.exists()) {
+        throw GradleException(
+            "Missing android/key.properties — refuse to build an unsigned/debug-signed release. " +
+                "Copy key.properties.example and configure the upload keystore.",
+        )
     }
 }
 
