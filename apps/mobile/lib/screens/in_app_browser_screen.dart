@@ -2,7 +2,9 @@ import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:webview_flutter/webview_flutter.dart";
 
+import "../core/site.dart";
 import "../core/theme.dart";
+import "../widgets/browser_share_sheet.dart";
 
 /// Open an https link in the in-app WebView (never the system browser).
 void openInAppWebView(
@@ -68,6 +70,18 @@ class _InAppBrowserScreenState extends State<InAppBrowserScreen> {
       ..loadRequest(Uri.parse(widget.url));
   }
 
+  bool get _zh => Localizations.localeOf(
+    context,
+  ).languageCode.toLowerCase().startsWith("zh");
+
+  Future<void> _openShareSheet() async {
+    final live = await _controller.currentUrl();
+    final url = (live != null && live.isNotEmpty) ? live : widget.url;
+    if (!mounted) return;
+    final title = _pageTitle.trim().isEmpty ? Site.name : _pageTitle.trim();
+    await showBrowserShareSheet(context, url: url, title: title, zh: _zh);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +92,7 @@ class _InAppBrowserScreenState extends State<InAppBrowserScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          tooltip: "Close",
+          tooltip: _zh ? "关闭" : "Close",
           onPressed: () => context.pop(),
           icon: const Icon(Icons.close_rounded),
         ),
@@ -93,9 +107,14 @@ class _InAppBrowserScreenState extends State<InAppBrowserScreen> {
         ),
         actions: [
           IconButton(
-            tooltip: "Refresh",
+            tooltip: _zh ? "刷新" : "Refresh",
             onPressed: () => _controller.reload(),
             icon: const Icon(Icons.refresh_rounded, size: 20),
+          ),
+          IconButton(
+            tooltip: _zh ? "分享" : "Share",
+            onPressed: _openShareSheet,
+            icon: const Icon(Icons.ios_share_rounded, size: 20),
           ),
         ],
         bottom: PreferredSize(
