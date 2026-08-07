@@ -6,7 +6,7 @@
  *   node scripts/sync-mobile-messages.mjs          # copy
  *   node scripts/sync-mobile-messages.mjs --check  # fail if out of sync
  */
-import { copyFileSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
