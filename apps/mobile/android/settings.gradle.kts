@@ -11,10 +11,17 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
-        // Prefer China mirrors when Google/Maven CDN is slow (falls back to official).
-        maven(url = "https://maven.aliyun.com/repository/google")
-        maven(url = "https://maven.aliyun.com/repository/central")
-        maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
+        // GitHub Actions (CI=true): use official repos — Aliyun often 502s from US runners
+        // and Gradle then disables the mirror, cascading into classpath resolve failures.
+        // Local China: prefer Aliyun first via SUNDAY_USE_ALIYUN_MAVEN=1 (default when not CI).
+        val useAliyun =
+            System.getenv("SUNDAY_USE_ALIYUN_MAVEN") == "1" ||
+                (System.getenv("CI") == null && System.getenv("SUNDAY_USE_ALIYUN_MAVEN") != "0")
+        if (useAliyun) {
+            maven(url = "https://maven.aliyun.com/repository/google")
+            maven(url = "https://maven.aliyun.com/repository/central")
+            maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
+        }
         google()
         mavenCentral()
         gradlePluginPortal()
