@@ -52,14 +52,12 @@ class _SplashGateState extends ConsumerState<SplashGate>
       vsync: this,
       duration: SplashGate.animationDuration,
     );
-    _exit = AnimationController(
-      vsync: this,
-      duration: SplashGate.exitDuration,
-    );
+    _exit = AnimationController(vsync: this, duration: SplashGate.exitDuration);
     _fadeOut = CurvedAnimation(parent: _exit, curve: Curves.easeOutCubic);
-    _liftOut = Tween<double>(begin: 0, end: -22).animate(
-      CurvedAnimation(parent: _exit, curve: Curves.easeInOutCubic),
-    );
+    _liftOut = Tween<double>(
+      begin: 0,
+      end: -22,
+    ).animate(CurvedAnimation(parent: _exit, curve: Curves.easeInOutCubic));
 
     unawaited(_bootstrap());
   }
@@ -153,7 +151,9 @@ class _SplashGateState extends ConsumerState<SplashGate>
             child: _SplashSurface(
               progress: !_prefsLoaded
                   ? const AlwaysStoppedAnimation(0)
-                  : (_animationEnabled ? _intro : const AlwaysStoppedAnimation(1)),
+                  : (_animationEnabled
+                        ? _intro
+                        : const AlwaysStoppedAnimation(1)),
               onSkip: _skip,
               onDisable: _disableAndSkip,
             ),

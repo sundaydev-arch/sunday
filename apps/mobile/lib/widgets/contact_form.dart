@@ -82,10 +82,7 @@ class _ContactFormState extends ConsumerState<ContactForm> {
     if (AppConfig.hasTurnstile &&
         (_turnstileToken == null || _turnstileToken!.isEmpty)) {
       HapticFeedback.heavyImpact();
-      _setFormError(
-        _fields["error"]!,
-        detail: _messageFor("captcha_required"),
-      );
+      _setFormError(_fields["error"]!, detail: _messageFor("captcha_required"));
       return;
     }
 
@@ -324,10 +321,7 @@ class _ContactFormState extends ConsumerState<ContactForm> {
         ],
         if (_formErrorTitle != null) ...[
           const SizedBox(height: 16),
-          _FormErrorBanner(
-            title: _formErrorTitle!,
-            detail: _formErrorDetail,
-          ),
+          _FormErrorBanner(title: _formErrorTitle!, detail: _formErrorDetail),
         ],
         const SizedBox(height: 20),
         SizedBox(

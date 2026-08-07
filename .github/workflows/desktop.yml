@@ -148,7 +148,8 @@ jobs:
 
       - name: Tauri build (debug)
         working-directory: apps/desktop
-        run: pnpm tauri build --debug --bundles nsis --config "{\"bundle\":{\"createUpdaterArtifacts\":false}}"
+        shell: bash
+        run: pnpm tauri build --debug --bundles nsis --config '{"bundle":{"createUpdaterArtifacts":false}}'
         env:
           VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
           CI: true
