@@ -20,7 +20,7 @@
     "@sentry/nextjs": "^10.69.0",
     "@sunday/typescript-config": "workspace:*",
     "@types/react": "^19",
-    "posthog-js": "^1.412.1",
+    "posthog-js": "^1.413.3",
     "typescript": "^5",
     "vitest": "^4.0.18"
   },
