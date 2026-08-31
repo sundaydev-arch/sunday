@@ -17,10 +17,10 @@
     "react": "^19"
   },
   "devDependencies": {
-    "@sentry/nextjs": "^10.69.0",
+    "@sentry/nextjs": "^10.71.0",
     "@sunday/typescript-config": "workspace:*",
     "@types/react": "^19",
-    "posthog-js": "^1.412.1",
+    "posthog-js": "^1.422.2",
     "typescript": "^5",
     "vitest": "^4.0.18"
   },
