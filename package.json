@@ -18,10 +18,10 @@
     "desktop:bump": "node scripts/bump-desktop-version.mjs"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.15.1",
-    "oxfmt": "^0.62.0",
-    "oxlint": "^1.77.0",
-    "turbo": "^2.8.12"
+    "@lhci/cli": "^0.16.0",
+    "oxfmt": "^0.77.0",
+    "oxlint": "^1.92.0",
+    "turbo": "^2.11.10"
   },
   "engines": {
     "node": ">=20"
